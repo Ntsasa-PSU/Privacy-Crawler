@@ -17,6 +17,6 @@ func main() {
 	browserList := crawler.GetBrowsers(verbose)
 	crawler.VerifyTargetBrowser(browserList, *browser, verbose)
 
-	//targetURLs := crawler.ReadJSON(verbose)
+	crawler.ReadJSON(verbose)
 
 }

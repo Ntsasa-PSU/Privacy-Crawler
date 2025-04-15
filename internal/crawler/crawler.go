@@ -60,7 +60,7 @@ func ReadJSON(verbose *bool) *URLList {
 	// - Verbose Output - //
 	if *verbose {
 
-		fmt.Println("-- Parsed JSON --")
+		fmt.Println("\n-- Parsed JSON --")
 
 		for i, url := range urlList.URLs {
 			fmt.Printf("%d. %s\n", i+1, url)
