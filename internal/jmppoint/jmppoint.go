@@ -1,50 +1,55 @@
 package jmppoint
 
 import (
-    //"fmt"
-    //"net/http"
-    //"time"
-
-	//"privcrawler/internal/crawler"
-    "github.com/prometheus/client_golang/prometheus"
-    //"github.com/prometheus/client_golang/prometheus/promhttp"
+	"fmt"
+	"net/http"
+	"os/exec"
 )
 
-// ---- DATA STRUCTURES ---- //
+// TESTING: This is a test function to check if the code is working as expected.
+// Current understanding is a little shakey. This code was used to demo a wrapper for the main crawler code.
+// Further working on the handler will 
+func Handler(w http.ResponseWriter, r *http.Request) {
+	query := r.URL.Query()
+	verbose := query.Get("verbose")
+	browser := query.Get("browser")
 
-//Metrics: testing structure for prometheus metrics
-var (
-	// httpRequests: Counter for total number of HTTP requests.
-    httpRequests = prometheus.NewCounterVec(
-        prometheus.CounterOpts{
-            Name: "http_requests_total",
-            Help: "Total number of HTTP requests",
-        },
-        []string{"path"},
-    )
+	fmt.Printf("[DEBUG] Request received\n")
+	fmt.Printf("[DEBUG] Query parameters: verbose=%q, browser=%q\n", verbose, browser)
 
-	// requestDuration: Histogram for response time of HTTP requests.
-    requestDuration = prometheus.NewHistogramVec(
-        prometheus.HistogramOpts{
-            Name:    "http_request_duration_seconds",
-            Help:    "Histogram of response time for handler",
-            Buckets: prometheus.DefBuckets,
-        },
-        []string{"path"},
-    )
-)
+	args := []string{}
+	if verbose != "" && verbose != "v" {
+		errMsg := fmt.Sprintf("Invalid verbose value: %q. Expected 'v'", verbose)
+		fmt.Printf("[ERROR] %s\n", errMsg)
+		http.Error(w, errMsg, http.StatusBadRequest)
+		return
+	}
 
+	if verbose == "v" {
+		args = append(args, "-v")
+		fmt.Printf("[DEBUG] Added verbose flag\n")
+	}
 
+	if browser != "" {
+		args = append(args, "-b", browser)
+		fmt.Printf("[DEBUG] Added browser flag: %s\n", browser)
+	}
 
-// ---- Functions ---- //
- 
-// Function: Initialize 
-// Operation: This will initialize the Prometheus metrics and register them with the default registry.
-// Return: None
-func init() {
-    // Register metrics
-    prometheus.MustRegister(httpRequests)
-    prometheus.MustRegister(requestDuration)
+	crawlerPath := "./maincrawler/main-crawler.go"
+	fmt.Printf("[DEBUG] Executing crawler at: %s\n", crawlerPath)
+	fmt.Printf("[DEBUG] Command args: %v\n", args)
+
+	cmdArgs := append([]string{"run", crawlerPath}, args...)
+	cmd := exec.Command("go", cmdArgs...)
+
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		errMsg := fmt.Sprintf("Crawler execution failed: %v\nOutput: %s", err, output)
+		fmt.Printf("[ERROR] %s\n", errMsg)
+		http.Error(w, errMsg, http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write(output)
 }
-
-// Function 

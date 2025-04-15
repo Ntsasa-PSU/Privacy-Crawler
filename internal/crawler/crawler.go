@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+
+
 // ---- DATA STRUCTURES ---- //
 
 // URLList: Represents the structure of JSON file.
@@ -25,10 +27,14 @@ type Result struct {
 	Error    error
 }
 
+
+
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
 const URLFILE string = "internal/config/urls.json"
+
+
 
 // ---- Functions ---- //
 
