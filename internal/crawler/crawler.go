@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"io"
 	"time"
 	"net/http"
 )
@@ -117,7 +118,7 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 		fmt.Println("\n-- Verifying Browser Selection -- ")
 	}
 
-	// Iterate through map of browsers
+	// Iterate through map of browsers.
 	for browserName := range browsers {
 
 		if browserName == selectedBrowser {
@@ -135,6 +136,61 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 	return "None"
 }
 
+// Fucntion: Fetch URL
+// Operation: Connect and returns header from selected URL.
+// Return: Header (map), Status Code (int), Error
+
+// Need to correct: Dosnt seem to be changig header based on browser. Need further
+// analysis of code output.
+func FetchHeaders(url string, browser string, verbose *bool) (map[string][]string, int, error) {
+    
+	// Create a new HTTP client.
+	client := &http.Client{
+		// Timeout if cannot connect.
+        Timeout: time.Second * 10,
+    }
+    
+    // Create a new request.
+	request, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        return nil, 0, fmt.Errorf("error creating request: %v", err)
+    }
+    
+    // Set the User-Agent header based on browser.
+	request.Header.Set("User-Agent", browser)
+
+    // Make the request.
+	response, err := client.Do(request)
+    if err != nil {
+        return nil, 0, fmt.Errorf("error making request: %v", err)
+    }
+	// Read the response body
+	
+	bodyBytes, err := io.ReadAll(response.Body)
+		if err != nil {
+    	return response.Header, response.StatusCode, fmt.Errorf("error reading response body: %v", err)
+	}
+
+	// Print the response body
+	fmt.Printf("Response body: %s\n", bodyBytes)
+
+	// Close the response.
+	defer response.Body.Close()
+
+   
+	
+   // - Verbose output - //
+	if *verbose {
+		fmt.Printf("\n-- HTTP Headers for %s --\n", url)
+		fmt.Printf("Status: %s\n", response.Status)
+	}
+
+	// Return the headers and status code.
+	return response.Header, response.StatusCode, nil
+}
+
+
+
 // Next Step 1: Handle HTTP Headers
 //    3. Parse HTTP Headers
 
@@ -143,43 +199,3 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 //    2. Create a server that can analyze the HTTP headers
 //    3. Process the HTTP headers data
 //    4. Return the HTTP headers analysis results in JSON format
-// PROMETHESUS PACKAGE - METRIC SERVER: Use? YES
-
-// Fucntion: Fetch URL
-// Operation: Goes and returns header from selected URL.
-// Return: String(Browser found)
-func FetchHeaders(url string, browser string, verbose *bool) (map[string][]string, int, error) {
-    
-	// Create a new HTTP client
-	client := &http.Client{
-		// Timeout if cannot connect.
-        Timeout: time.Second * 10,
-    }
-    
-    // Create a new request
-	request, err := http.NewRequest("GET", url, nil)
-    if err != nil {
-        return nil, 0, fmt.Errorf("error creating request: %v", err)
-    }
-    
-    // Set the User-Agent header based on browserAgent
-	request.Header.Set("User-Agent", browser)
-
-    // Make the request
-	response, err := client.Do(request)
-    if err != nil {
-        return nil, 0, fmt.Errorf("error making request: %v", err)
-    }
-	defer response.Body.Close()
-   
-	
-   // Verbose output
-	if *verbose {
-		fmt.Printf("\n-- HTTP Headers for %s --\n", url)
-		fmt.Printf("Status: %s\n", response.Status)
-	}
-
-	// Return the headers and status code
-	return response.Header, response.StatusCode, nil
-
-}

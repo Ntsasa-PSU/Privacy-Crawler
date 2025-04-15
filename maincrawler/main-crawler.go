@@ -30,6 +30,6 @@ func main() {
 
 	crawler.ReadJSON(verbose)
 
-	fmt.Println(crawler.FetchHeaders("https://www.runescape.com", *browser, verbose ))
+	crawler.FetchHeaders("https://httpbin.org/user-agent", *browser, verbose )
 
 }
