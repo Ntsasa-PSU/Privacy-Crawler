@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"net/http"
 )
 
 
@@ -135,10 +136,7 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 }
 
 // Next Step 1: Handle HTTP Headers
-//    1. Connect to a URL
-//    2. Get HTTP Headers
 //    3. Parse HTTP Headers
-//    4. Return HTTP Headers
 
 // Next Step 2: Create Server Go agents can connect to
 //    1. Create a server that can analyze the connection
@@ -146,3 +144,42 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 //    3. Process the HTTP headers data
 //    4. Return the HTTP headers analysis results in JSON format
 // PROMETHESUS PACKAGE - METRIC SERVER: Use? YES
+
+// Fucntion: Fetch URL
+// Operation: Goes and returns header from selected URL.
+// Return: String(Browser found)
+func FetchHeaders(url string, browser string, verbose *bool) (map[string][]string, int, error) {
+    
+	// Create a new HTTP client
+	client := &http.Client{
+		// Timeout if cannot connect.
+        Timeout: time.Second * 10,
+    }
+    
+    // Create a new request
+	request, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        return nil, 0, fmt.Errorf("error creating request: %v", err)
+    }
+    
+    // Set the User-Agent header based on browserAgent
+	request.Header.Set("User-Agent", browser)
+
+    // Make the request
+	response, err := client.Do(request)
+    if err != nil {
+        return nil, 0, fmt.Errorf("error making request: %v", err)
+    }
+	defer response.Body.Close()
+   
+	
+   // Verbose output
+	if *verbose {
+		fmt.Printf("\n-- HTTP Headers for %s --\n", url)
+		fmt.Printf("Status: %s\n", response.Status)
+	}
+
+	// Return the headers and status code
+	return response.Header, response.StatusCode, nil
+
+}
