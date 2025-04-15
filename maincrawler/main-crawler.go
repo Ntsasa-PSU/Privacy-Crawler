@@ -30,6 +30,7 @@ func main() {
 
 	crawler.ReadJSON(verbose)
 
-	crawler.FetchHeaders("https://httpbin.org/user-agent", *browser, verbose )
+	//Website currently returns user-agent of user.
+	crawler.FetchHeaders("https://google.com", *browser, verbose )
 
 }

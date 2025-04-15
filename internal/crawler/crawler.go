@@ -140,8 +140,7 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 // Operation: Connect and returns header from selected URL.
 // Return: Header (map), Status Code (int), Error
 
-// Need to correct: Dosnt seem to be changig header based on browser. Need further
-// analysis of code output.
+// Note: browser is just a string in field for "user-agent"
 func FetchHeaders(url string, browser string, verbose *bool) (map[string][]string, int, error) {
     
 	// Create a new HTTP client.
@@ -164,16 +163,17 @@ func FetchHeaders(url string, browser string, verbose *bool) (map[string][]strin
     if err != nil {
         return nil, 0, fmt.Errorf("error making request: %v", err)
     }
-	// Read the response body
 	
-	bodyBytes, err := io.ReadAll(response.Body)
-		if err != nil {
-    	return response.Header, response.StatusCode, fmt.Errorf("error reading response body: %v", err)
+	// - Verbose output - //
+	if *verbose {
+		// Read the response body
+		bodyBytes, err := io.ReadAll(response.Body)
+			if err != nil {
+    		return response.Header, response.StatusCode, fmt.Errorf("error reading response body: %v", err)
+		}
+		// Print the response body
+		fmt.Printf("\n-- Response body -- \n%s\n", bodyBytes)
 	}
-
-	// Print the response body
-	fmt.Printf("Response body: %s\n", bodyBytes)
-
 	// Close the response.
 	defer response.Body.Close()
 
