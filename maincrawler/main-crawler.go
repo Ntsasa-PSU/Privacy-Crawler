@@ -26,11 +26,15 @@ func main() {
 	flag.Parse()
 
 	browserList := crawler.GetBrowsers(verbose)
-	crawler.VerifyTargetBrowser(browserList, *browser, verbose)
+	_, userAgent, err := crawler.VerifyTargetBrowser(browserList, *browser, verbose)
 
+	if err != nil {
+		fmt.Println("Error: ", err)
+		return
+	}
 	crawler.ReadJSON(verbose)
 
 	//Website currently returns user-agent of user.
-	crawler.FetchHeaders("https://google.com", *browser, verbose )
+	crawler.FetchPacket("https://google.com", userAgent, verbose)
 
 }

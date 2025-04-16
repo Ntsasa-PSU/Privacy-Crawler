@@ -3,13 +3,11 @@ package crawler
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"io"
-	"time"
 	"net/http"
+	"os"
+	"time"
 )
-
-
 
 // ---- DATA STRUCTURES ---- //
 
@@ -29,14 +27,10 @@ type Result struct {
 	Error    error
 }
 
-
-
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
 const URLFILE string = "internal/config/urls.json"
-
-
 
 // ---- Functions ---- //
 
@@ -109,17 +103,16 @@ func GetBrowsers(verbose *bool) map[string]string {
 
 // Fucntion: Verify Browser
 // Operation: Verify we have an agent for selected browser.
-// Return: String(Browser found)
-func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, verbose *bool) string {
+// Return: String(Browser found), String (User-Agent), Error
+func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, verbose *bool) (string, string, error) {
 
 	// - Verbose Output - //
 	if *verbose {
-
 		fmt.Println("\n-- Verifying Browser Selection -- ")
 	}
 
 	// Iterate through map of browsers.
-	for browserName := range browsers {
+	for browserName, browserUserAgent := range browsers {
 
 		if browserName == selectedBrowser {
 
@@ -128,74 +121,70 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 				fmt.Printf("Found: %s\n", browserName)
 			}
 
-			return browserName
+			return browserName, browserUserAgent, nil
 		}
 	}
 
-	fmt.Printf("Error: Failure to find browser.\n")
-	return "None"
+	return "None", "None", fmt.Errorf("browser not found")
 }
 
 // Fucntion: Fetch URL
 // Operation: Connect and returns header from selected URL.
-// Return: Header (map), Status Code (int), Error
+// Return: Header (map), Body (map), Status Code (int), Error
+func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]string, []byte, int, error) {
 
-// Note: browser is just a string in field for "user-agent"
-func FetchHeaders(url string, browser string, verbose *bool) (map[string][]string, int, error) {
-    
 	// Create a new HTTP client.
 	client := &http.Client{
 		// Timeout if cannot connect.
-        Timeout: time.Second * 10,
-    }
-    
-    // Create a new request.
-	request, err := http.NewRequest("GET", url, nil)
-    if err != nil {
-        return nil, 0, fmt.Errorf("error creating request: %v", err)
-    }
-    
-    // Set the User-Agent header based on browser.
-	request.Header.Set("User-Agent", browser)
-
-    // Make the request.
-	response, err := client.Do(request)
-    if err != nil {
-        return nil, 0, fmt.Errorf("error making request: %v", err)
-    }
-	
-	// - Verbose output - //
-	if *verbose {
-		// Read the response body
-		bodyBytes, err := io.ReadAll(response.Body)
-			if err != nil {
-    		return response.Header, response.StatusCode, fmt.Errorf("error reading response body: %v", err)
-		}
-		// Print the response body
-		fmt.Printf("\n-- Response body -- \n%s\n", bodyBytes)
+		Timeout: time.Second * 10,
 	}
-	// Close the response.
+
+	// Create a new request.
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, nil, 0, fmt.Errorf("error creating request: %v", err)
+	}
+
+	// Set the User-Agent header based on browser.
+	request.Header.Set("User-Agent", userAgent)
+
+	// Make the request.
+	response, err := client.Do(request)
+	if err != nil {
+		return nil, nil, 0, fmt.Errorf("error making request: %v", err)
+	}
+
+	// Cleanup on response.
 	defer response.Body.Close()
 
-   
-	
-   // - Verbose output - //
+	// Read the body.
+	body, err := io.ReadAll(response.Body)
+	if err != nil {
+		return nil, nil, 0, fmt.Errorf("error reading response body: %v", err)
+	}
+
+	// Cleanup on body.
+	response.Body.Close()
+
+	// - Verbose output - //
 	if *verbose {
-		fmt.Printf("\n-- HTTP Headers for %s --\n", url)
+		fmt.Printf("\n-- HTTP Packet: Header for %s --\n", url)
 		fmt.Printf("Status: %s\n", response.Status)
+
+		fmt.Printf("\n-- HTTP Packet: Body for %s --\n\n", url)
+		fmt.Printf("Body: %s\n", string(body))
 	}
 
 	// Return the headers and status code.
-	return response.Header, response.StatusCode, nil
+	return response.Header, body, response.StatusCode, nil
 }
 
+// Make PrivacyMetric Struct
+// Make function to import packet data into struct.
 
+//Then can make application do all borwsers+ urls
+// Host on server
+// Can figure out where to host
 
-// Next Step 1: Handle HTTP Headers
-//    3. Parse HTTP Headers
+//Once data gathered, analyze it? and make a report
 
-// Next Step 2: Create Server Go agents can connect to
-//    1. Create a server that can analyze the connection
-//    2. Create a server that can analyze the HTTP headers
-//    3. Process the HTTP headers data
-//    4. Return the HTTP headers analysis results in JSON format
