@@ -5,8 +5,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
+	"strings"
 	"time"
+
+	"github.com/playwright-community/playwright-go"
 )
 
 // ---- DATA STRUCTURES ---- //
@@ -18,6 +22,13 @@ type URLList struct {
 	URLs []string `json:"urls"`
 }
 
+// CookieList: Represents the List of cookies collected.
+// Uses type Cookie for each entry.
+type CookiesList struct {
+    List []Cookie
+}
+
+
 // Result: Represent the outcome from fetching URL.
 type Result struct {
 	URL      string
@@ -26,6 +37,20 @@ type Result struct {
 	Duration time.Duration
 	Error    error
 }
+
+// Cookie: Represents the fields of a Cookie.
+type Cookie struct {
+    Name         string
+    Value        string
+    Domain       string
+    Path         string
+    Expires      float64
+    HttpOnly     bool
+    Secure       bool
+    SameSite     string
+    IsFirstParty bool
+}
+
 
 // ---- Global Definitions ---- //
 
@@ -178,6 +203,185 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 	// Return the headers and status code.
 	return response.Header, body, response.StatusCode, nil
 }
+
+// Function: Fetch Cookies
+// Operation: Connect to url with browser, creates cookies using playwright
+//            to fully generate all cookies due to Javascript delys.      
+// Return: A list of cookies collected and stored in a struct (*CookiesList)
+func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *CookiesList {
+    // - Run Playwright - //
+    pw, err := playwright.Run()
+    if err != nil {
+        fmt.Printf("could not lauch playwright: %v", err)
+        return nil
+    }
+    defer pw.Stop()
+
+
+    // Declare launcher ahead of time
+    var launcher playwright.Browser
+
+
+    // launching specific browser (edge is missing)
+    if browser == "chrome" {
+        launcher, err = pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+            Headless: playwright.Bool(isHidden),
+        })
+    } else if browser == "firefox" {
+        launcher, err = pw.Firefox.Launch(playwright.BrowserTypeLaunchOptions{
+            Headless: playwright.Bool(isHidden),
+        })
+    } else if browser == "safari" {
+        launcher, err = pw.WebKit.Launch(playwright.BrowserTypeLaunchOptions{
+            Headless: playwright.Bool(isHidden),
+        })
+    } else {
+        fmt.Printf("Browser %s is not compativle\n", browser)
+        return nil
+    }
+    if err != nil {
+        fmt.Printf("could not launch browser: %s\n", browser)
+        return nil
+    }
+
+
+    // Create the context for the broswer
+    context, err := launcher.NewContext() // creates an isolated browsers contents
+    if err != nil {
+        fmt.Printf("could not create context: %v", err)
+        return nil
+    }
+
+
+    // Open up a new tab from the context
+    page, err := context.NewPage() // Add a new Tab
+    if err != nil {
+        fmt.Printf("could not create a new Tab: %v", err)
+        return nil
+    }
+
+
+    // Navigate to the desired URL
+    _, err = page.Goto(url)
+    if err != nil {
+        fmt.Printf("could not go to url page: %v", err)
+    }
+
+
+    // Wait for a few seconds for JS to run and set cookies
+    page.WaitForTimeout(5000)
+
+
+    // Get cookies
+    cookies, err := context.Cookies()
+    if err != nil {
+        fmt.Printf("could not get cookies: %v", err)
+        return nil
+    }
+    if len(cookies) == 0 {
+        fmt.Println("No cookies were returned.")
+        return nil
+    }
+
+
+    // Store cookies in a struc, organized
+    var collectedCookies CookiesList
+   
+    for _, c := range cookies {
+        // Check for first or third part
+        isFirst := isFirstParty(c.Domain, url) // checks if url and cleanDomain are the same
+
+
+        // Store fields inside of a cookie
+        cookie := Cookie {
+            Name:         c.Name,
+            Value:        c.Value,
+            Domain:       c.Domain,
+            Path:         c.Path,
+            Expires:      float64(c.Expires),
+            HttpOnly:     c.HttpOnly,
+            Secure:       c.Secure,
+            SameSite:     string(*c.SameSite),
+            IsFirstParty: isFirst,
+        }
+        // append cookie into the list
+        collectedCookies.List = append(collectedCookies.List, cookie)
+    }
+
+
+    return &collectedCookies
+}
+
+
+// Function: Print Cookies
+// Operation: Print the cookies in a readable format
+// Return: None
+func PrintCookies(cookieList *CookiesList, fromPage string) {
+    if cookieList == nil || len(cookieList.List) == 0 {
+        fmt.Println("No cookies to display.")
+        return
+    }
+
+
+    fmt.Println("\n-- Cookies Displayed --")
+
+
+    for i, cookie := range cookieList.List {
+        partyType := "third-party"
+        if cookie.IsFirstParty {
+            partyType = "first-party"
+        }
+
+
+        fmt.Printf("Cookie %d.[%s] \n", i+1, partyType)
+        fmt.Printf("\tFrom Page: %s\n", fromPage)
+        fmt.Printf("\tName: %s\n", cookie.Name)
+        fmt.Printf("\tValue: %s\n", cookie.Value)
+        fmt.Printf("\tDomain: %s\n", cookie.Domain)
+        fmt.Printf("\tPath: %s\n", cookie.Path)
+
+
+        // Check if Expires is greater than 0 to avoid negative time
+        // Expires is a float64, so we convert it to int64 for Unix time
+        if cookie.Expires > 0 {
+            expTime := time.Unix(int64(cookie.Expires), 0)
+            fmt.Printf("\tExpires: %s\n", expTime.Format("Mon, 02 Jan 2006"))
+        } else {
+            fmt.Println("\tExpres: No Expiration")
+        }
+
+
+        fmt.Printf("\tHttpOnly: %t\n", cookie.HttpOnly)
+        fmt.Printf("\tSecure: %t\n", cookie.Secure)
+        fmt.Printf("\tSameSite: %s\n", cookie.SameSite)
+        fmt.Println("#-------------------------------------#")
+    }
+}
+
+
+// Function: isFirstParty
+// Operation: Check if the cookie domain is first-party or third-party
+// Return: True if first-party, false if third-party
+func isFirstParty(cookieDomain, fulURL string) bool {
+    parsedURL, err := url.Parse(fulURL)
+    if err != nil {
+        fmt.Printf("could not parse URL: %v", err)
+        return false
+    }
+
+
+    topLevelDomain := parsedURL.Host // Get the domain from the URL (e.g., "www.amazon.com")
+    cleanCookieDomain := strings.TrimPrefix(cookieDomain, ".") // TrimPrefix: removes "." from the start of cookieDomain
+   
+    // HasPrefix: checks if the cleanCookieDomain STARTS with the topLevelDomain.
+    isPrefix := strings.HasPrefix(cleanCookieDomain, topLevelDomain)
+    // HasSuffix: checks if the topLevelDomain ENDS with the cleanCookieDomain.
+    isSuffix := strings.HasSuffix(topLevelDomain, cleanCookieDomain)
+
+
+    return isSuffix || isPrefix
+}
+
 
 // Make PrivacyMetric Struct
 // Make function to import packet data into struct.
