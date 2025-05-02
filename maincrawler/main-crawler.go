@@ -12,6 +12,8 @@ func main() {
 	// -- COMMNAD LINE ARGUMENTS -- //
 	verbose := flag.Bool("v", false, "Enable verbose output.")
 	browser := flag.String("b", "chrome", "Other browser option selected.")
+	isHidden := flag.Bool("i", false, "Hides browser")
+	url := flag.String("u", "https://www.amazon.com", "URL for website to analyze")
 	test := flag.Bool("t", false, "Prototype test flag.")
 
 	if *test {
@@ -28,9 +30,7 @@ func main() {
 	browserList := crawler.GetBrowsers(verbose)
 	crawler.VerifyTargetBrowser(browserList, *browser, verbose)
 
-	crawler.ReadJSON(verbose)
-
-	//Website currently returns user-agent of user.
-	crawler.FetchHeaders("https://google.com", *browser, verbose )
-
+	// Fetch Cookies
+	cookies := crawler.FetchCookies(*browser, *isHidden, *url, verbose)
+	crawler.PrintCookies(cookies, *url, verbose)
 }

@@ -3,18 +3,15 @@ package crawler
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 	"io"
-	"time"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/playwright-community/playwright-go"
 )
-
-
 
 // ---- DATA STRUCTURES ---- //
 
@@ -53,13 +50,10 @@ type Cookie struct {
 	IsFirstParty bool
 }
 
-
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
 const URLFILE string = "internal/config/urls.json"
-
-
 
 // ---- Functions ---- //
 
@@ -159,7 +153,6 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 	return "None", "None", fmt.Errorf("browser not found")
 }
 
-
 // Fucntion: Fetch URL
 // Operation: Connect and returns header from selected URL.
 // Return: Header (map), Body (map), Status Code (int), Error
@@ -242,11 +235,11 @@ func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *Coo
 			Headless: playwright.Bool(isHidden),
 		})
 	} else if browser == "edge" {
-        launcher, err = pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
-            Channel: playwright.String("msedge"),
-            Headless: playwright.Bool(isHidden),
-        })
-    } else {
+		launcher, err = pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+			Channel:  playwright.String("msedge"),
+			Headless: playwright.Bool(isHidden),
+		})
+	} else {
 		fmt.Printf("Browser %s is not compativle\n", browser)
 		return nil
 	}
@@ -399,8 +392,6 @@ func isFirstParty(cookieDomain, fulURL string) bool {
 
 	return isSuffix || isPrefix
 }
-
-
 
 // Make PrivacyMetric Struct
 // Make function to import packet data into struct.

@@ -16,6 +16,9 @@
 ### Tags: Toggle options.
     - '-v' Verbose Mode
     - '-b' Browser Selection
+    - '-i' true hides browser, false reveals browser
+    - '-u' Choose desired url, e.g https://www.example.com
+    - '-t' Prototype test flag
 
 ## ***-- Jump Point --***
 
@@ -37,3 +40,10 @@
     
     - Run the Jump Point application. Once it is listening on port 8080, connect to
       URL and run process from jmppoint instead of local.
+
+## **_-- How to run with PlayWright --_**
+
+### Install Playwright and browser binaries
+
+- go get github.com/playwright-community/playwright-go
+- go run github.com/playwright-community/playwright-go/cmd/playwright install
