@@ -22,12 +22,6 @@ type URLList struct {
 	URLs []string `json:"urls"`
 }
 
-// CookieList: Represents the List of cookies collected.
-// Uses type Cookie for each entry.
-type CookiesList struct {
-	List map[string][]Cookie
-}
-
 // Result: Represent the outcome from fetching URL.
 type Result struct {
 	URL      string
@@ -37,7 +31,13 @@ type Result struct {
 	Error    error
 }
 
-// Cookie: Represents the fields of a Cookie.
+// CookieList: Represents the List of cookies collected.
+// Uses type Cookie for each entry.
+type CookiesList struct {
+	List map[string][]Cookie
+}
+
+// Cookie: Represents the privacy characteristics of the collected cookies
 type Cookie struct {
 	Name         string
 	Value        string
@@ -48,6 +48,15 @@ type Cookie struct {
 	Secure       bool
 	SameSite     string
 	IsFirstParty bool
+}
+
+// Privacy Metric: Represents the privacy fields to consider
+type PrivacyMetric struct {
+	TotalCookies    int
+	TotalFirstParty int
+	TotalThirdParty int
+	TotalSecure     int
+	TotalNotSecure  int
 }
 
 // ---- Global Definitions ---- //
@@ -207,9 +216,8 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 // Function: Fetch Cookies
 // Operation: Connect to url with browser, creates cookies using playwright
 // to fully generate all cookies due to Javascript delys.
-//
 // Return: A list of cookies collected and stored in a struct (*CookiesList)
-func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *CookiesList {
+func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *PrivacyMetric, verbose *bool) *CookiesList {
 	// - Run Playwright - //
 	pw, err := playwright.Run()
 	if err != nil {
@@ -249,11 +257,12 @@ func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *Coo
 	}
 
 	if *verbose {
-		fmt.Printf("Launching %s...\n", browser)
+		fmt.Printf("Launching %s with %s...\n", browser, url)
 		if isHidden {
 			fmt.Println("\t- Browser is hidden.")
+		} else {
+			fmt.Println("\t- Browser is visible.")
 		}
-		fmt.Println("\t- Browser is visible.")
 	}
 
 	// Create the context for the broswer
@@ -295,9 +304,10 @@ func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *Coo
 		List: make(map[string][]Cookie),
 	}
 
-	for i, c := range cookies {
+	collectedCount := 0
+	for _, c := range cookies {
 		// Check for first or third part
-		isFirst := isFirstParty(c.Domain, url) // checks if url and cleanDomain are the same
+		isFirst := isFirstParty(c.Domain, url) // check if url and cookie Domain are the same
 
 		// Store fields inside of a cookie
 		cookie := Cookie{
@@ -313,19 +323,58 @@ func FetchCookies(browser string, isHidden bool, url string, verbose *bool) *Coo
 		}
 		// Map to Cookie Key
 		collectedCookies.List[c.Domain] = append(collectedCookies.List[c.Domain], cookie)
+		collectedCount++
 
-		if *verbose {
-			fmt.Printf("*** Cookies Collected: %d ***\n", i+1)
-		}
+		addToMetric(privacyMetrics, cookie, url)
+
+	}
+
+	if *verbose {
+		fmt.Printf("*** Cookies Collected: %d ***\n", collectedCount)
 	}
 
 	return &collectedCookies
 }
 
+// Function: Add to Privacy Metric
+// Operation: Adds specific data from cookies to use for later analysis
+// Return: None
+func addToMetric(privacyMetrics *PrivacyMetric, cookie Cookie, url string) {
+	// Add 1 to cookie total
+	privacyMetrics.TotalCookies++
+
+	// Check for cookie party
+	if isFirstParty(cookie.Domain, url) {
+		privacyMetrics.TotalFirstParty++
+	} else {
+		privacyMetrics.TotalThirdParty++
+	}
+
+	// Check for Security
+	if cookie.Secure {
+		privacyMetrics.TotalSecure++
+	} else {
+		privacyMetrics.TotalNotSecure++
+	}
+}
+
+// Function: Print Privacy Metrics
+// Operation: Prints the privacy metrics in a readable formate
+// Return: None
+func PrintMetrics(privacyMetrics PrivacyMetric, metricName string) {
+	fmt.Printf("#----- Printing %s Privacy Metrics ------#\n", metricName)
+	fmt.Printf("Total Cookies: %d\n", privacyMetrics.TotalCookies)
+	fmt.Printf("Total First-Party Cookies: %d\n", privacyMetrics.TotalFirstParty)
+	fmt.Printf("Total Third-Party Cookies: %d\n", privacyMetrics.TotalThirdParty)
+	fmt.Printf("Total Secure Domains: %d\n", privacyMetrics.TotalSecure)
+	fmt.Printf("Total Unsecure Domains: %d\n", privacyMetrics.TotalNotSecure)
+	fmt.Println("#--------------------------------------------#")
+}
+
 // Function: Print Cookies
 // Operation: Print the cookies in a readable format
 // Return: None
-func PrintCookies(cookieList *CookiesList, fromPage string, verbose *bool) {
+func PrintCookies(cookieList *CookiesList, url string, verbose *bool) {
 	if cookieList == nil || len(cookieList.List) == 0 {
 		fmt.Println("No cookies to display.")
 		return
@@ -334,17 +383,19 @@ func PrintCookies(cookieList *CookiesList, fromPage string, verbose *bool) {
 	fmt.Println("\n-- Cookies Displayed --")
 
 	cookieCount := 0
+	domainCount := 1
 	for domain, cookies := range cookieList.List {
-		fmt.Printf("Domain: %s\n", domain)
+		fmt.Printf("Domain %d: %s\n", domainCount, domain)
 
 		for i, cookie := range cookies {
 			partyType := "third-party"
-			fmt.Printf("\tCookie %d.[%s] \n", i+1, partyType)
 			if cookie.IsFirstParty {
 				partyType = "first-party"
 			}
+			fmt.Printf("\tCookie %d.[%s] \n", i+1, partyType)
 
-			fmt.Printf("\t\tFrom Page: %s\n", fromPage)
+			fmt.Printf("\t\tFrom Page: %s\n", url)
+			fmt.Printf("\t\tDomain: %s\n", cookie.Domain)
 			fmt.Printf("\t\tName: %s\n", cookie.Name)
 			fmt.Printf("\t\tValue: %s\n", cookie.Value)
 			fmt.Printf("\t\tPath: %s\n", cookie.Path)
@@ -363,7 +414,7 @@ func PrintCookies(cookieList *CookiesList, fromPage string, verbose *bool) {
 			fmt.Printf("\t\tSameSite: %s\n", cookie.SameSite)
 			cookieCount++
 		}
-
+		domainCount++
 		fmt.Println("#-------------------------------------#")
 	}
 
@@ -375,8 +426,8 @@ func PrintCookies(cookieList *CookiesList, fromPage string, verbose *bool) {
 // Function: isFirstParty
 // Operation: Check if the cookie domain is first-party or third-party
 // Return: True if first-party, false if third-party
-func isFirstParty(cookieDomain, fulURL string) bool {
-	parsedURL, err := url.Parse(fulURL)
+func isFirstParty(cookieDomain, fullURL string) bool {
+	parsedURL, err := url.Parse(fullURL)
 	if err != nil {
 		fmt.Printf("could not parse URL: %v", err)
 		return false
