@@ -59,6 +59,12 @@ type PrivacyMetric struct {
 	TotalNotSecure  int
 }
 
+// Possible additions to PrivacyMetric
+// - track cookie paths (if suspicious, like not "/" path)
+// - HttpOnly
+// - SameSite (to see how strict(Strict, Lax, None) passing to third-party sites is like)
+// - Expiration date? (maybe we can tell if it is a session cookie meaning it expires when you close the tab)
+
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
@@ -218,6 +224,7 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 // to fully generate all cookies due to Javascript delys.
 // Return: A list of cookies collected and stored in a struct (*CookiesList)
 func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *PrivacyMetric, verbose *bool) *CookiesList {
+
 	// - Run Playwright - //
 	pw, err := playwright.Run()
 	if err != nil {
@@ -404,7 +411,7 @@ func PrintCookies(cookieList *CookiesList, url string, verbose *bool) {
 			// Expires is a float64, so we convert it to int64 for Unix time
 			if cookie.Expires > 0 {
 				expTime := time.Unix(int64(cookie.Expires), 0)
-				fmt.Printf("\t\tExpires: %s\n", expTime.Format("Mon, 02 Jan 2006"))
+				fmt.Printf("\t\tExpires: %s\n", expTime.Format("Jan/02/2006 15:04:05"))
 			} else {
 				fmt.Println("\t\tExpires: No Expiration")
 			}
