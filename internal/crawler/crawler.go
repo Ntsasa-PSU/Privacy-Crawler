@@ -52,11 +52,26 @@ type Cookie struct {
 
 // Privacy Metric: Represents the privacy fields to consider
 type PrivacyMetric struct {
-	TotalCookies    int
-	TotalFirstParty int
-	TotalThirdParty int
-	TotalSecure     int
-	TotalNotSecure  int
+	TotalCookies    		int
+	
+	TotalFirstParty 		int
+	TotalThirdParty 		int
+	
+	TotalSecure     		int
+	TotalNotSecure  		int
+	
+	SuspiciousPaths 		[]Cookie // [SuspiciousCookieName {..., ..., Path, ...}]
+	
+	TotalHttpOnly			int
+	TotalNotHttpOnly		int
+
+	SameSiteStrict			int
+	SameSiteNone			int
+	SameSiteLax				int
+	SameSiteUnset			int
+
+	TotalSessionCookies		int
+	TotalPersistentCookies	int
 }
 
 // Possible additions to PrivacyMetric
@@ -363,6 +378,35 @@ func addToMetric(privacyMetrics *PrivacyMetric, cookie Cookie, url string) {
 	} else {
 		privacyMetrics.TotalNotSecure++
 	}
+
+	// Check for Path
+	if cookie.Path != "/" {
+		privacyMetrics.SuspiciousPaths = append(privacyMetrics.SuspiciousPaths, cookie)
+	}
+
+	// Check for HttpOnly
+	if cookie.HttpOnly {
+		privacyMetrics.TotalHttpOnly++
+	} else {
+		privacyMetrics.TotalNotHttpOnly++
+	}
+
+	// Check for SameSite
+	if cookie.SameSite == "Strict" {
+		privacyMetrics.SameSiteStrict++
+	} else if cookie.SameSite == "Lax" {
+		privacyMetrics.SameSiteLax++
+	} else {
+		privacyMetrics.SameSiteNone++
+	}
+
+	// Check for Session/Persistent
+	if cookie.Expires < 0 {
+		privacyMetrics.TotalSessionCookies++
+	} else {
+		privacyMetrics.TotalPersistentCookies++
+	}
+
 }
 
 // Function: Print Privacy Metrics
@@ -370,11 +414,44 @@ func addToMetric(privacyMetrics *PrivacyMetric, cookie Cookie, url string) {
 // Return: None
 func PrintMetrics(privacyMetrics PrivacyMetric, metricName string) {
 	fmt.Printf("#----- Printing %s Privacy Metrics ------#\n", metricName)
+
 	fmt.Printf("Total Cookies: %d\n", privacyMetrics.TotalCookies)
+
 	fmt.Printf("Total First-Party Cookies: %d\n", privacyMetrics.TotalFirstParty)
 	fmt.Printf("Total Third-Party Cookies: %d\n", privacyMetrics.TotalThirdParty)
+
 	fmt.Printf("Total Secure Domains: %d\n", privacyMetrics.TotalSecure)
 	fmt.Printf("Total Unsecure Domains: %d\n", privacyMetrics.TotalNotSecure)
+
+	if len(privacyMetrics.SuspiciousPaths) > 0 {
+		fmt.Println("All Suspicious Paths: \n")
+		for i := 0; i < len(privacyMetrics.SuspiciousPaths); i++ {
+			cookie := privacyMetrics.SuspiciousPaths[i]
+	
+			partyType := "third-party"
+			if cookie.IsFirstParty {
+				partyType = "first-party"
+			}
+			fmt.Printf("\tCookie %d. [%s]\n", i, partyType)
+			fmt.Printf("\t\tDomain: %s\n", cookie.Domain)
+			fmt.Printf("\t\tName: %s\n", cookie.Name)
+			fmt.Printf("\t\tPath: %s\n", cookie.Path)
+		}
+	} else {
+		fmt.Println("No Suspicious Paths")
+	}
+
+	fmt.Printf("Total HttpOnly: %d\n", privacyMetrics.TotalHttpOnly)
+	fmt.Printf("Total Not HttpOnly: %d\n", privacyMetrics.TotalNotHttpOnly)
+
+	fmt.Printf("Total SameSite with Strict: %d\n", privacyMetrics.SameSiteStrict)
+	fmt.Printf("Total SameSite with Lax: %d\n", privacyMetrics.SameSiteLax)
+	fmt.Printf("Total SameSite with None: %d\n", privacyMetrics.SameSiteNone)
+	fmt.Printf("Total SameSite with Unset: %d\n", privacyMetrics.SameSiteUnset)
+
+	fmt.Printf("Total Session Cookies: %d\n", privacyMetrics.TotalSessionCookies)
+	fmt.Printf("Total Persistent Cookies: %d\n", privacyMetrics.TotalPersistentCookies)
+
 	fmt.Println("#--------------------------------------------#")
 }
 
