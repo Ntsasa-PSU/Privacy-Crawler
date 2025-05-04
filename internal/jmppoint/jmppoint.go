@@ -7,6 +7,117 @@ import (
 	"os/exec"
 )
 
+// ---- DATA STRUCTURES ---- //
+
+// Options: Represents tags for the main method.
+type ProcessOptions struct{
+	
+	// Functionality.
+	browser string
+	url string
+	hidden bool
+
+	// Testing & Logs.
+	verbose bool
+	test bool
+}
+
+//Process: Holds the option for the given process.
+type Process struct{
+
+	options ProcessOptions
+
+	// Port that this porcess will run off.
+	port int
+}
+
+//Data type that will act as a warpper for intializing with functions
+type ProcessOptionsFunc func (*ProcessOptions)
+
+
+func defaultProcessOptions() ProcessOptions{
+
+	return &ProcessOptions{
+		browser: chrome,
+		url: "https://www.google.com",
+		hidden: false,
+
+		verbose: false
+		test: false
+	}
+	
+}
+
+func newProcess(opts ...ProcessOptionsFunc) *Process {
+
+	o := defaultProcessOptions()
+	
+	for _, fn := range opts{
+
+		fn((&o))
+	}
+
+	return &Process{
+
+		options: o, 
+	}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // TESTING: This is a test function to check if the code is working as expected.
 // Current understanding is a little shakey. This code was used to demo a wrapper for the main crawler code.
 func UserInputHandler(w http.ResponseWriter, r *http.Request) {

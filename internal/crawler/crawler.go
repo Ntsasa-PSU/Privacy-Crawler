@@ -5,8 +5,17 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+<<<<<<< HEAD
 	"os"
 	"time"
+=======
+	"net/url"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/playwright-community/playwright-go"
+>>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
 )
 
 // ---- DATA STRUCTURES ---- //
@@ -27,6 +36,58 @@ type Result struct {
 	Error    error
 }
 
+<<<<<<< HEAD
+=======
+// CookieList: Represents the List of cookies collected.
+// Uses type Cookie for each entry.
+type CookiesList struct {
+	List map[string][]Cookie
+}
+
+// Cookie: Represents the privacy characteristics of the collected cookies
+type Cookie struct {
+	Name         string
+	Value        string
+	Domain       string
+	Path         string
+	Expires      float64
+	HttpOnly     bool
+	Secure       bool
+	SameSite     string
+	IsFirstParty bool
+}
+
+// Privacy Metric: Represents the privacy fields to consider
+type PrivacyMetric struct {
+	TotalCookies    		int
+	
+	TotalFirstParty 		int
+	TotalThirdParty 		int
+	
+	TotalSecure     		int
+	TotalNotSecure  		int
+	
+	SuspiciousPaths 		[]Cookie // [SuspiciousCookieName {..., ..., Path, ...}]
+	
+	TotalHttpOnly			int
+	TotalNotHttpOnly		int
+
+	SameSiteStrict			int
+	SameSiteNone			int
+	SameSiteLax				int
+	SameSiteUnset			int
+
+	TotalSessionCookies		int
+	TotalPersistentCookies	int
+}
+
+// Possible additions to PrivacyMetric
+// - track cookie paths (if suspicious, like not "/" path)
+// - HttpOnly
+// - SameSite (to see how strict(Strict, Lax, None) passing to third-party sites is like)
+// - Expiration date? (maybe we can tell if it is a session cookie meaning it expires when you close the tab)
+
+>>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
@@ -118,6 +179,7 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 
 			// - Verbose Output - //
 			if *verbose {
+
 				fmt.Printf("Found: %s\n", browserName)
 			}
 
@@ -179,6 +241,7 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 	return response.Header, body, response.StatusCode, nil
 }
 
+<<<<<<< HEAD
 // Make PrivacyMetric Struct
 // Make function to import packet data into struct.
 
@@ -188,3 +251,313 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 
 //Once data gathered, analyze it? and make a report
 
+=======
+// Function: Fetch Cookies
+// Operation: Connect to url with browser, creates cookies using playwright
+// to fully generate all cookies due to Javascript delys.
+// Return: A list of cookies collected and stored in a struct (*CookiesList)
+func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *PrivacyMetric, verbose *bool) *CookiesList {
+
+	// - Run Playwright - //
+	pw, err := playwright.Run()
+	if err != nil {
+		fmt.Printf("could not lauch playwright: %v", err)
+		return nil
+	}
+	defer pw.Stop()
+
+	// Declare launcher ahead of time
+	var launcher playwright.Browser
+
+	// launching specific browser (edge is missing)
+	if browser == "chrome" {
+		launcher, err = pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+			Headless: playwright.Bool(isHidden),
+		})
+	} else if browser == "firefox" {
+		launcher, err = pw.Firefox.Launch(playwright.BrowserTypeLaunchOptions{
+			Headless: playwright.Bool(isHidden),
+		})
+	} else if browser == "safari" {
+		launcher, err = pw.WebKit.Launch(playwright.BrowserTypeLaunchOptions{
+			Headless: playwright.Bool(isHidden),
+		})
+	} else if browser == "edge" {
+		launcher, err = pw.Chromium.Launch(playwright.BrowserTypeLaunchOptions{
+			Channel:  playwright.String("msedge"),
+			Headless: playwright.Bool(isHidden),
+		})
+	} else {
+		fmt.Printf("Browser %s is not compativle\n", browser)
+		return nil
+	}
+	if err != nil {
+		fmt.Printf("could not launch browser: %s\n", browser)
+		return nil
+	}
+
+	if *verbose {
+		fmt.Printf("Launching %s with %s...\n", browser, url)
+		if isHidden {
+			fmt.Println("\t- Browser is hidden.")
+		} else {
+			fmt.Println("\t- Browser is visible.")
+		}
+	}
+
+	// Create the context for the broswer
+	context, err := launcher.NewContext() // creates an isolated browsers contents
+	if err != nil {
+		fmt.Printf("could not create context: %v", err)
+		return nil
+	}
+
+	// Open up a new tab from the context
+	page, err := context.NewPage() // Add a new Tab
+	if err != nil {
+		fmt.Printf("could not create a new Tab: %v", err)
+		return nil
+	}
+
+	// Navigate to the desired URL
+	_, err = page.Goto(url)
+	if err != nil {
+		fmt.Printf("could not go to url page: %v", err)
+	}
+
+	// Wait for a few seconds for JS to run and set cookies
+	page.WaitForTimeout(5000)
+
+	// Get cookies
+	cookies, err := context.Cookies()
+	if err != nil {
+		fmt.Printf("could not get cookies: %v", err)
+		return nil
+	}
+	if len(cookies) == 0 {
+		fmt.Println("No cookies were returned.")
+		return nil
+	}
+
+	// Store cookies in a struc, organized
+	collectedCookies := CookiesList{
+		List: make(map[string][]Cookie),
+	}
+
+	collectedCount := 0
+	for _, c := range cookies {
+		// Check for first or third part
+		isFirst := isFirstParty(c.Domain, url) // check if url and cookie Domain are the same
+
+		// Store fields inside of a cookie
+		cookie := Cookie{
+			Name:         c.Name,
+			Value:        c.Value,
+			Domain:       c.Domain,
+			Path:         c.Path,
+			Expires:      float64(c.Expires),
+			HttpOnly:     c.HttpOnly,
+			Secure:       c.Secure,
+			SameSite:     string(*c.SameSite),
+			IsFirstParty: isFirst,
+		}
+		// Map to Cookie Key
+		collectedCookies.List[c.Domain] = append(collectedCookies.List[c.Domain], cookie)
+		collectedCount++
+
+		addToMetric(privacyMetrics, cookie, url)
+
+	}
+
+	if *verbose {
+		fmt.Printf("*** Cookies Collected: %d ***\n", collectedCount)
+	}
+
+	return &collectedCookies
+}
+
+// Function: Add to Privacy Metric
+// Operation: Adds specific data from cookies to use for later analysis
+// Return: None
+func addToMetric(privacyMetrics *PrivacyMetric, cookie Cookie, url string) {
+	// Add 1 to cookie total
+	privacyMetrics.TotalCookies++
+
+	// Check for cookie party
+	if isFirstParty(cookie.Domain, url) {
+		privacyMetrics.TotalFirstParty++
+	} else {
+		privacyMetrics.TotalThirdParty++
+	}
+
+	// Check for Security
+	if cookie.Secure {
+		privacyMetrics.TotalSecure++
+	} else {
+		privacyMetrics.TotalNotSecure++
+	}
+
+	// Check for Path
+	if cookie.Path != "/" {
+		privacyMetrics.SuspiciousPaths = append(privacyMetrics.SuspiciousPaths, cookie)
+	}
+
+	// Check for HttpOnly
+	if cookie.HttpOnly {
+		privacyMetrics.TotalHttpOnly++
+	} else {
+		privacyMetrics.TotalNotHttpOnly++
+	}
+
+	// Check for SameSite
+	if cookie.SameSite == "Strict" {
+		privacyMetrics.SameSiteStrict++
+	} else if cookie.SameSite == "Lax" {
+		privacyMetrics.SameSiteLax++
+	} else {
+		privacyMetrics.SameSiteNone++
+	}
+
+	// Check for Session/Persistent
+	if cookie.Expires < 0 {
+		privacyMetrics.TotalSessionCookies++
+	} else {
+		privacyMetrics.TotalPersistentCookies++
+	}
+
+}
+
+// Function: Print Privacy Metrics
+// Operation: Prints the privacy metrics in a readable formate
+// Return: None
+func PrintMetrics(privacyMetrics PrivacyMetric, metricName string) {
+	fmt.Printf("#----- Printing %s Privacy Metrics ------#\n", metricName)
+
+	fmt.Printf("Total Cookies: %d\n", privacyMetrics.TotalCookies)
+
+	fmt.Printf("Total First-Party Cookies: %d\n", privacyMetrics.TotalFirstParty)
+	fmt.Printf("Total Third-Party Cookies: %d\n", privacyMetrics.TotalThirdParty)
+
+	fmt.Printf("Total Secure Domains: %d\n", privacyMetrics.TotalSecure)
+	fmt.Printf("Total Unsecure Domains: %d\n", privacyMetrics.TotalNotSecure)
+
+	if len(privacyMetrics.SuspiciousPaths) > 0 {
+		fmt.Println("All Suspicious Paths")
+		for i := 0; i < len(privacyMetrics.SuspiciousPaths); i++ {
+			cookie := privacyMetrics.SuspiciousPaths[i]
+	
+			partyType := "third-party"
+			if cookie.IsFirstParty {
+				partyType = "first-party"
+			}
+			fmt.Printf("\tCookie %d. [%s]\n", i, partyType)
+			fmt.Printf("\t\tDomain: %s\n", cookie.Domain)
+			fmt.Printf("\t\tName: %s\n", cookie.Name)
+			fmt.Printf("\t\tPath: %s\n", cookie.Path)
+		}
+	} else {
+		fmt.Println("No Suspicious Paths")
+	}
+
+	fmt.Printf("Total HttpOnly: %d\n", privacyMetrics.TotalHttpOnly)
+	fmt.Printf("Total Not HttpOnly: %d\n", privacyMetrics.TotalNotHttpOnly)
+
+	fmt.Printf("Total SameSite with Strict: %d\n", privacyMetrics.SameSiteStrict)
+	fmt.Printf("Total SameSite with Lax: %d\n", privacyMetrics.SameSiteLax)
+	fmt.Printf("Total SameSite with None: %d\n", privacyMetrics.SameSiteNone)
+	fmt.Printf("Total SameSite with Unset: %d\n", privacyMetrics.SameSiteUnset)
+
+	fmt.Printf("Total Session Cookies: %d\n", privacyMetrics.TotalSessionCookies)
+	fmt.Printf("Total Persistent Cookies: %d\n", privacyMetrics.TotalPersistentCookies)
+
+	fmt.Println("#--------------------------------------------#")
+}
+
+// Function: Print Cookies
+// Operation: Print the cookies in a readable format
+// Return: None
+func PrintCookies(cookieList *CookiesList, url string, verbose *bool) {
+	if cookieList == nil || len(cookieList.List) == 0 {
+		fmt.Println("No cookies to display.")
+		return
+	}
+
+	fmt.Println("\n-- Cookies Displayed --")
+
+	cookieCount := 0
+	domainCount := 1
+	for domain, cookies := range cookieList.List {
+		fmt.Printf("Domain %d: %s\n", domainCount, domain)
+
+		for i, cookie := range cookies {
+			partyType := "third-party"
+			if cookie.IsFirstParty {
+				partyType = "first-party"
+			}
+			fmt.Printf("\tCookie %d.[%s] \n", i+1, partyType)
+
+			fmt.Printf("\t\tFrom Page: %s\n", url)
+			fmt.Printf("\t\tDomain: %s\n", cookie.Domain)
+			fmt.Printf("\t\tName: %s\n", cookie.Name)
+			fmt.Printf("\t\tValue: %s\n", cookie.Value)
+			fmt.Printf("\t\tPath: %s\n", cookie.Path)
+
+			// Check if Expires is greater than 0 to avoid negative time
+			// Expires is a float64, so we convert it to int64 for Unix time
+			if cookie.Expires > 0 {
+				expTime := time.Unix(int64(cookie.Expires), 0)
+				fmt.Printf("\t\tExpires: %s\n", expTime.Format("Jan/02/2006 15:04:05"))
+			} else {
+				fmt.Println("\t\tExpires: No Expiration")
+			}
+
+			fmt.Printf("\t\tHttpOnly: %t\n", cookie.HttpOnly)
+			fmt.Printf("\t\tSecure: %t\n", cookie.Secure)
+			fmt.Printf("\t\tSameSite: %s\n", cookie.SameSite)
+			cookieCount++
+		}
+		domainCount++
+		fmt.Println("#-------------------------------------#")
+	}
+
+	if *verbose {
+		fmt.Printf("Total Cookies Collected: %d\n", cookieCount)
+	}
+}
+
+// Function: isFirstParty
+// Operation: Check if the cookie domain is first-party or third-party
+// Return: True if first-party, false if third-party
+func isFirstParty(cookieDomain, fullURL string) bool {
+	parsedURL, err := url.Parse(fullURL)
+	if err != nil {
+		fmt.Printf("could not parse URL: %v", err)
+		return false
+	}
+
+	topLevelDomain := parsedURL.Host                           // Get the domain from the URL (e.g., "www.amazon.com")
+	cleanCookieDomain := strings.TrimPrefix(cookieDomain, ".") // TrimPrefix: removes "." from the start of cookieDomain
+
+	// HasPrefix: checks if the cleanCookieDomain STARTS with the topLevelDomain.
+	isPrefix := strings.HasPrefix(cleanCookieDomain, topLevelDomain)
+	// HasSuffix: checks if the topLevelDomain ENDS with the cleanCookieDomain.
+	isSuffix := strings.HasSuffix(topLevelDomain, cleanCookieDomain)
+
+	return isSuffix || isPrefix
+}
+
+// Make PrivacyMetric Struct
+// Make function to import packet data into struct.
+
+//Then can make application do all borwsers+ urls
+// Host on server
+// Can figure out where to host
+
+//Once data gathered, analyze it? and make a report
+
+// Next Step 2: Create Server Go agents can connect to
+//    1. Create a server that can analyze the connection
+//    2. Create a server that can analyze the HTTP headers
+//    3. Process the HTTP headers data
+//    4. Return the HTTP headers analysis results in JSON format
+>>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
