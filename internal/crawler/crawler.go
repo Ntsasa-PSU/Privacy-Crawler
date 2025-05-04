@@ -424,7 +424,7 @@ func PrintMetrics(privacyMetrics PrivacyMetric, metricName string) {
 	fmt.Printf("Total Unsecure Domains: %d\n", privacyMetrics.TotalNotSecure)
 
 	if len(privacyMetrics.SuspiciousPaths) > 0 {
-		fmt.Println("All Suspicious Paths: \n")
+		fmt.Println("All Suspicious Paths")
 		for i := 0; i < len(privacyMetrics.SuspiciousPaths); i++ {
 			cookie := privacyMetrics.SuspiciousPaths[i]
 	
