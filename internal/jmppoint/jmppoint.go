@@ -1,239 +1,121 @@
 package jmppoint
 
-import (
-	"fmt"
-	"net/http"
-	"os"
-	"os/exec"
-)
+var PORT int = 22
 
 // ---- DATA STRUCTURES ---- //
 
 // Options: Represents tags for the main method.
-type ProcessOptions struct{
-	
+type ProcessOptions struct {
 	// Functionality.
 	browser string
-	url string
-	hidden bool
-
-	// Testing & Logs.
+	url     string
+	hidden  bool
 	verbose bool
-	test bool
 }
 
-//Process: Holds the option for the given process.
-type Process struct{
-
+// Process: Holds the option for the given process.
+type Process struct {
 	options ProcessOptions
-
-	// Port that this porcess will run off.
+	// Port that this process will run off.
 	port int
 }
 
-//Data type that will act as a warpper for intializing with functions
-type ProcessOptionsFunc func (*ProcessOptions)
+// Data type that will act as a wrapper for initializing with functions
+type ProcessOptionsFunc func(*ProcessOptions)
 
+// Constants for browser types
+const (
+	chrome  = "chrome"
+	firefox = "firefox"
+	edge    = "edge"
+	safari = "safari"
+)
 
-func defaultProcessOptions() ProcessOptions{
-
-	return &ProcessOptions{
+func defaultProcessOptions() ProcessOptions {
+	return ProcessOptions{
 		browser: chrome,
-		url: "https://www.google.com",
-		hidden: false,
-
+		url:     "https://www.google.com",
+		hidden:  false,
 		verbose: false,
-		test: false
 	}
-	
 }
 
-func newProcess(opts ...ProcessOptionsFunc) *Process {
+// ---- FUNCTIONAL OPTIONS ---- //
 
+// WithBrowser sets the browser option
+func WithBrowser(browser string) ProcessOptionsFunc {
+	return func(opts *ProcessOptions) {
+		opts.browser = browser
+	}
+}
+
+// WithURL sets the URL option
+func WithURL(url string) ProcessOptionsFunc {
+	return func(opts *ProcessOptions) {
+		opts.url = url
+	}
+}
+
+// WithHidden sets the hidden browser option
+func WithHidden(hidden bool) ProcessOptionsFunc {
+	return func(opts *ProcessOptions) {
+		opts.hidden = hidden
+	}
+}
+
+// WithVerbose sets the verbose logging option
+func WithVerbose(verbose bool) ProcessOptionsFunc {
+	return func(opts *ProcessOptions) {
+		opts.verbose = verbose
+	}
+}
+
+// WithPort sets the port for the process
+func WithPort(port int) ProcessOptionsFunc {
+	return func(opts *ProcessOptions) {
+		// Note: You'll need to add port to ProcessOptions struct if you want this
+	}
+}
+
+// ---- CONSTRUCTOR ---- //
+
+func NewProcess(opts ...ProcessOptionsFunc) *Process {
 	o := defaultProcessOptions()
-	
-	for _, fn := range opts{
 
-		fn((&o))
+	for _, fn := range opts {
+		fn(&o)
 	}
 
 	return &Process{
-
-		options: o, 
-	}
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TESTING: This is a test function to check if the code is working as expected.
-// Current understanding is a little shakey. This code was used to demo a wrapper for the main crawler code.
-func UserInputHandler(w http.ResponseWriter, r *http.Request) {
-	// Serve HTML form for GET requests
-	if r.Method == "GET" {
-		html := `
-        <!DOCTYPE html>
-        <html>
-        <body>
-            <form action="/test" method="POST">
-                <label>Name:</label><br>
-                <input type="text" name="name"><br>
-                <label>Age:</label><br>
-                <input type="number" name="age"><br>
-                <label>Browser:</label><br>
-                <select name="browser">
-                    <option value="chrome">Chrome</option>
-                    <option value="firefox">Firefox</option>
-                    <option value="safari">Safari</option>
-                </select><br>
-                <label>Verbose:</label>
-                <input type="checkbox" name="verbose" value="v"><br><br>
-                <input type="submit" value="Run Crawler">
-            </form>
-        </body>
-        </html>`
-		fmt.Fprint(w, html)
-		return
-	}
-
-	// Process form submission for POST requests
-	if r.Method == "POST" {
-		if err := r.ParseForm(); err != nil {
-			http.Error(w, "Error parsing form", http.StatusBadRequest)
-			return
-		}
-
-		// Get form values
-		name := r.FormValue("name")
-		age := r.FormValue("age")
-		browser := r.FormValue("browser")
-		verbose := r.FormValue("verbose")
-
-		// Build command args
-		args := []string{"-t"}
-
-		if verbose == "v" {
-			args = append(args, "-v")
-		}
-		if browser != "" {
-			args = append(args, "-b", browser)
-		}
-
-		// Execute crawler with input
-		crawlerPath := "./maincrawler/main-crawler.go"
-		cmdArgs := append([]string{"run", crawlerPath}, args...)
-		cmd := exec.Command("go", cmdArgs...)
-
-		// Set the input values as environment variables
-		cmd.Env = append(os.Environ(),
-			fmt.Sprintf("USER_NAME=%s", name),
-			fmt.Sprintf("USER_AGE=%s", age),
-		)
-
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			http.Error(w, fmt.Sprintf("Error: %v\nOutput: %s", err, output), 500)
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write(output)
+		options: o,
+		port:    PORT, // default port
 	}
 }
 
-func GeneralHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	verbose := query.Get("verbose")
-	browser := query.Get("browser")
+// ---- METHODS ---- //
 
-	fmt.Printf("[DEBUG] Request received\n")
-	fmt.Printf("[DEBUG] Query parameters: verbose=%q, browser=%q\n", verbose, browser)
-
-	args := []string{}
-	if verbose != "" && verbose != "v" {
-		errMsg := fmt.Sprintf("Invalid verbose value: %q. Expected 'v'", verbose)
-		fmt.Printf("[ERROR] %s\n", errMsg)
-		http.Error(w, errMsg, http.StatusBadRequest)
-		return
-	}
-
-	if verbose == "v" {
-		args = append(args, "-v")
-		fmt.Printf("[DEBUG] Added verbose flag\n")
-	}
-
-	if browser != "" {
-		args = append(args, "-b", browser)
-		fmt.Printf("[DEBUG] Added browser flag: %s\n", browser)
-	}
-
-	crawlerPath := "./maincrawler/main-crawler.go"
-	fmt.Printf("[DEBUG] Executing crawler at: %s\n", crawlerPath)
-	fmt.Printf("[DEBUG] Command args: %v\n", args)
-
-	cmdArgs := append([]string{"run", crawlerPath}, args...)
-	cmd := exec.Command("go", cmdArgs...)
-
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		errMsg := fmt.Sprintf("Crawler execution failed: %v\nOutput: %s", err, output)
-		fmt.Printf("[ERROR] %s\n", errMsg)
-		http.Error(w, errMsg, http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "text/plain")
-	w.Write(output)
+// GetBrowser returns the browser option
+func (p *Process) GetBrowser() string {
+	return p.options.browser
 }
+
+// GetURL returns the URL option
+func (p *Process) GetURL() string {
+	return p.options.url
+}
+
+// IsHidden returns the hidden option
+func (p *Process) IsHidden() bool {
+	return p.options.hidden
+}
+
+// IsVerbose returns the verbose option
+func (p *Process) IsVerbose() bool {
+	return p.options.verbose
+}
+
+// GetPort returns the port
+func (p *Process) GetPort() int {
+	return p.port
+}
+
