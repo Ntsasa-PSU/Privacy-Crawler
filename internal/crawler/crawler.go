@@ -739,6 +739,83 @@ func CreateReport(analysis map[string]float64) string {
 
 }
 
+// appendReportToFile appends the report to DATA.txt with timestamp and metadata
+func AppendDataToFile(report, url, browser string) error {
+	// Open file in append mode, create if it doesn't exist
+	file, err := os.OpenFile("DATA.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		return fmt.Errorf("failed to open DATA.txt: %v", err)
+	}
+	defer file.Close()
+
+	// Create a formatted entry with timestamp and metadata
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
+	entry := fmt.Sprintf("\n=== Privacy Analysis Report ===\n")
+	entry += fmt.Sprintf("Timestamp: %s\n", timestamp)
+	entry += fmt.Sprintf("URL: %s\n", url)
+	entry += fmt.Sprintf("Browser: %s\n", browser)
+	entry += fmt.Sprintf("Report:\n%s\n", report)
+	entry += fmt.Sprintf("=== End Report ===\n\n")
+
+	// Write the entry to the file
+	_, err = file.WriteString(entry)
+	if err != nil {
+		return fmt.Errorf("failed to write to DATA.txt: %v", err)
+	}
+
+	return nil
+}
+
+// Function: Get Metrics Report
+// Operation: Generates a report of the privacy metrics in a structured format
+// Return: A string containing the formatted metrics report
+func GetMetricsReport(privacyMetrics PrivacyMetric, metricName string) string {
+	var report strings.Builder
+
+	report.WriteString(fmt.Sprintf("#----- Printing %s Privacy Metrics ------#\n", metricName))
+
+	report.WriteString(fmt.Sprintf("Total Cookies: %d\n", privacyMetrics.TotalCookies))
+
+	report.WriteString(fmt.Sprintf("Total First-Party Cookies: %d\n", privacyMetrics.TotalFirstParty))
+	report.WriteString(fmt.Sprintf("Total Third-Party Cookies: %d\n", privacyMetrics.TotalThirdParty))
+
+	report.WriteString(fmt.Sprintf("Total Secure Domains: %d\n", privacyMetrics.TotalSecure))
+	report.WriteString(fmt.Sprintf("Total Unsecure Domains: %d\n", privacyMetrics.TotalNotSecure))
+
+	if len(privacyMetrics.SuspiciousPaths) > 0 {
+		report.WriteString("All Suspicious Paths\n")
+		for i := 0; i < len(privacyMetrics.SuspiciousPaths); i++ {
+			cookie := privacyMetrics.SuspiciousPaths[i]
+
+			partyType := "third-party"
+			if cookie.IsFirstParty {
+				partyType = "first-party"
+			}
+			report.WriteString(fmt.Sprintf("\tCookie %d. [%s]\n", i, partyType))
+			report.WriteString(fmt.Sprintf("\t\tDomain: %s\n", cookie.Domain))
+			report.WriteString(fmt.Sprintf("\t\tName: %s\n", cookie.Name))
+			report.WriteString(fmt.Sprintf("\t\tPath: %s\n", cookie.Path))
+		}
+	} else {
+		report.WriteString("No Suspicious Paths\n")
+	}
+
+	report.WriteString(fmt.Sprintf("Total HttpOnly: %d\n", privacyMetrics.TotalHttpOnly))
+	report.WriteString(fmt.Sprintf("Total Not HttpOnly: %d\n", privacyMetrics.TotalNotHttpOnly))
+
+	report.WriteString(fmt.Sprintf("Total SameSite with Strict: %d\n", privacyMetrics.SameSiteStrict))
+	report.WriteString(fmt.Sprintf("Total SameSite with Lax: %d\n", privacyMetrics.SameSiteLax))
+	report.WriteString(fmt.Sprintf("Total SameSite with None: %d\n", privacyMetrics.SameSiteNone))
+	report.WriteString(fmt.Sprintf("Total SameSite with Unset: %d\n", privacyMetrics.SameSiteUnset))
+
+	report.WriteString(fmt.Sprintf("Total Session Cookies: %d\n", privacyMetrics.TotalSessionCookies))
+	report.WriteString(fmt.Sprintf("Total Persistent Cookies: %d\n", privacyMetrics.TotalPersistentCookies))
+
+	report.WriteString("#--------------------------------------------#\n")
+
+	return report.String()
+}
+
 // Make function to import packet data into struct.
 
 //Then can make application do all borwsers+ urls

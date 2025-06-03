@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"privcrawler/internal/crawler"
 )
 
@@ -13,16 +12,7 @@ func main() {
 	verbose := flag.Bool("v", false, "Enable verbose output.")
 	browser := flag.String("b", "chrome", "Other browser option selected.")
 	isHidden := flag.Bool("i", false, "Hides browser")
-	// url := flag.String("u", "https://www.amazon.com", "URL for website to analyze")
-	test := flag.Bool("t", false, "Prototype test flag.")
-
-	if *test {
-		// Get input from environment variables
-		name := os.Getenv("USER_NAME")
-		age := os.Getenv("USER_AGE")
-
-		fmt.Printf("Your name is %s and you are %s years old.\n", name, age)
-	}
+	url := flag.String("u", "https://www.amazon.com", "URL for website to analyze")
 
 	// Parse command line flags
 	flag.Parse()
@@ -36,20 +26,21 @@ func main() {
 	safePrivacyMetric := crawler.PrivacyMetric{}
 
 	// Fetch cookies from amazon
-	cookie1 := crawler.FetchCookies(*browser, *isHidden, "https://www.amazon.com", &safePrivacyMetric, verbose, 20000)
+	cookie1 := crawler.FetchCookies(*browser, *isHidden, *url, &safePrivacyMetric, verbose, 20000)
 
 	// Print cookies from amazon
-	crawler.PrintCookies(cookie1, "https://www.amazon.com", verbose)
+	crawler.PrintCookies(cookie1, *url, verbose)
 
+	urltarget := *url + ": Cookies"
 	// Print metrics from amazon
-	crawler.PrintMetrics(safePrivacyMetric, "Amazon Cookies")
+	data := crawler.GetMetricsReport(safePrivacyMetric, urltarget)
 
-	// Analyze the Privacy Metrics in amazon
-	analysis := crawler.AnalyzeMetrics(safePrivacyMetric)
 
-	// Generate a report for the Privacy Metrics in amazon
-	report := crawler.CreateReport(analysis)
+	err := crawler.AppendDataToFile(data, *url, *browser)
+	if err != nil {
+		fmt.Printf("Error appending report to file: %v\n", err)
+	}
 
 	// Print out the report gathered from amazon
-	fmt.Println(report)
+	fmt.Println(data)
 }

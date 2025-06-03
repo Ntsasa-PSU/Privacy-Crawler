@@ -42,7 +42,7 @@ func defaultProcessOptions() ProcessOptions{
 		url: "https://www.google.com",
 		hidden: false,
 
-		verbose: false
+		verbose: false,
 		test: false
 	}
 	
