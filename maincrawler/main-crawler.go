@@ -28,42 +28,28 @@ func main() {
 	flag.Parse()
 
 	browserList := crawler.GetBrowsers(verbose)
-	_, userAgent, err := crawler.VerifyTargetBrowser(browserList, *browser, verbose)
+	crawler.VerifyTargetBrowser(browserList, *browser, verbose)
 
-<<<<<<< HEAD
-	if err != nil {
-		fmt.Println("Error: ", err)
-		return
-	}
-	crawler.ReadJSON(verbose)
-
-	//Website currently returns user-agent of user.
-	crawler.FetchPacket("https://google.com", userAgent, verbose)
-=======
 	// --- TESTING COOKIES WITH MULTIPLE URL's AND TESTING SAFE AND LESS SAFE URL's ---
 
-	// Declare structure for safe sites
+	// Declare structure for privacy metrics
 	safePrivacyMetric := crawler.PrivacyMetric{}
->>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
 
-	// Fetch Cookies With Login Feature
-	cookies1 := crawler.FetchCookies(*browser, *isHidden, "https://www.amazon.com", &safePrivacyMetric, verbose)
-	cookies2 := crawler.FetchCookies(*browser, *isHidden, "https://www.youtube.com", &safePrivacyMetric, verbose)
-	cookies3 := crawler.FetchCookies(*browser, *isHidden, "https://www.instagram.com", &safePrivacyMetric, verbose)
-	crawler.PrintCookies(cookies1, "https://www.amazon.com", verbose)
-	crawler.PrintCookies(cookies2, "https://www.youtube.com", verbose)
-	crawler.PrintCookies(cookies3, "https://www.instagram.com", verbose)
+	// Fetch cookies from amazon
+	cookie1 := crawler.FetchCookies(*browser, *isHidden, "https://www.amazon.com", &safePrivacyMetric, verbose, 20000)
 
-	// Declare structure for safe sites
-	sketchyPrivacyMetric := crawler.PrivacyMetric{}
+	// Print cookies from amazon
+	crawler.PrintCookies(cookie1, "https://www.amazon.com", verbose)
 
-	// Fetch Cookies with Analytics/Ads
-	cookies4 := crawler.FetchCookies(*browser, *isHidden, "https://freerobux.en.uptodown.com/android", &sketchyPrivacyMetric, verbose)
-	cookies5 := crawler.FetchCookies(*browser, *isHidden, "https://moviekeen.com/soap-2day/", &sketchyPrivacyMetric, verbose)
-	crawler.PrintCookies(cookies4, "https://freerobux.en.uptodown.com/android", verbose)
-	crawler.PrintCookies(cookies5, "https://moviekeen.com/soap-2day/", verbose)
+	// Print metrics from amazon
+	crawler.PrintMetrics(safePrivacyMetric, "Amazon Cookies")
 
-	// Print Metrics
-	crawler.PrintMetrics(safePrivacyMetric, "Secure")
-	crawler.PrintMetrics(sketchyPrivacyMetric, "Less Secure")
+	// Analyze the Privacy Metrics in amazon
+	analysis := crawler.AnalyzeMetrics(safePrivacyMetric)
+
+	// Generate a report for the Privacy Metrics in amazon
+	report := crawler.CreateReport(analysis)
+
+	// Print out the report gathered from amazon
+	fmt.Println(report)
 }

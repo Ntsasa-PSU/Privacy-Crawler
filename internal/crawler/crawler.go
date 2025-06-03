@@ -5,17 +5,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-<<<<<<< HEAD
-	"os"
-	"time"
-=======
 	"net/url"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/playwright-community/playwright-go"
->>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
 )
 
 // ---- DATA STRUCTURES ---- //
@@ -36,8 +31,6 @@ type Result struct {
 	Error    error
 }
 
-<<<<<<< HEAD
-=======
 // CookieList: Represents the List of cookies collected.
 // Uses type Cookie for each entry.
 type CookiesList struct {
@@ -59,26 +52,26 @@ type Cookie struct {
 
 // Privacy Metric: Represents the privacy fields to consider
 type PrivacyMetric struct {
-	TotalCookies    		int
-	
-	TotalFirstParty 		int
-	TotalThirdParty 		int
-	
-	TotalSecure     		int
-	TotalNotSecure  		int
-	
-	SuspiciousPaths 		[]Cookie // [SuspiciousCookieName {..., ..., Path, ...}]
-	
-	TotalHttpOnly			int
-	TotalNotHttpOnly		int
+	TotalCookies int
 
-	SameSiteStrict			int
-	SameSiteNone			int
-	SameSiteLax				int
-	SameSiteUnset			int
+	TotalFirstParty int
+	TotalThirdParty int
 
-	TotalSessionCookies		int
-	TotalPersistentCookies	int
+	TotalSecure    int
+	TotalNotSecure int
+
+	SuspiciousPaths []Cookie // [SuspiciousCookieName {..., ..., Path, ...}]
+
+	TotalHttpOnly    int
+	TotalNotHttpOnly int
+
+	SameSiteStrict int
+	SameSiteNone   int
+	SameSiteLax    int
+	SameSiteUnset  int
+
+	TotalSessionCookies    int
+	TotalPersistentCookies int
 }
 
 // Possible additions to PrivacyMetric
@@ -87,11 +80,25 @@ type PrivacyMetric struct {
 // - SameSite (to see how strict(Strict, Lax, None) passing to third-party sites is like)
 // - Expiration date? (maybe we can tell if it is a session cookie meaning it expires when you close the tab)
 
->>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
 // ---- Global Definitions ---- //
 
 // URL File: Location fo pre-configed JSON file.
 const URLFILE string = "internal/config/urls.json"
+
+// Security Ratio of cookie metrics
+// These values are the percentage thresholds used to determine the minimum security level
+// There are no constant value that makes these fields considered true. but these fields are
+// stepping stones to determining the security of a website based on the cookies collected.
+const SECURE_THRESHOLD float64 = 80.0         // 80%
+const FIRST_THRESHOLD float64 = 50.0          // 50%
+const THIRD_THRESHOLD float64 = 50.0          // 50%
+const HTTP_THRESHOLD float64 = 70.0           // 70%
+const SAMESITESTRICT_THRESHOLD float64 = 50.0 // 50%
+const SAMESITELAX_THRESHOLD float64 = 50.0    // 50%
+const SAMESITENONE_THRESHOLD float64 = 50.0   // 50%
+const SAMESITEUNSET_THRESHOLD float64 = 50.0  // 50%
+const SESSION_THRESHOLD float64 = 50.0        // 50%
+const PERSISTENT_THRESHOLD float64 = 50.0     // 50%
 
 // ---- Functions ---- //
 
@@ -169,6 +176,7 @@ func VerifyTargetBrowser(browsers map[string]string, selectedBrowser string, ver
 
 	// - Verbose Output - //
 	if *verbose {
+
 		fmt.Println("\n-- Verifying Browser Selection -- ")
 	}
 
@@ -241,22 +249,11 @@ func FetchPacket(url string, userAgent string, verbose *bool) (map[string][]stri
 	return response.Header, body, response.StatusCode, nil
 }
 
-<<<<<<< HEAD
-// Make PrivacyMetric Struct
-// Make function to import packet data into struct.
-
-//Then can make application do all borwsers+ urls
-// Host on server
-// Can figure out where to host
-
-//Once data gathered, analyze it? and make a report
-
-=======
 // Function: Fetch Cookies
 // Operation: Connect to url with browser, creates cookies using playwright
 // to fully generate all cookies due to Javascript delys.
 // Return: A list of cookies collected and stored in a struct (*CookiesList)
-func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *PrivacyMetric, verbose *bool) *CookiesList {
+func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *PrivacyMetric, verbose *bool, duration int) *CookiesList {
 
 	// - Run Playwright - //
 	pw, err := playwright.Run()
@@ -326,7 +323,7 @@ func FetchCookies(browser string, isHidden bool, url string, privacyMetrics *Pri
 	}
 
 	// Wait for a few seconds for JS to run and set cookies
-	page.WaitForTimeout(5000)
+	page.WaitForTimeout(float64(duration))
 
 	// Get cookies
 	cookies, err := context.Cookies()
@@ -445,7 +442,7 @@ func PrintMetrics(privacyMetrics PrivacyMetric, metricName string) {
 		fmt.Println("All Suspicious Paths")
 		for i := 0; i < len(privacyMetrics.SuspiciousPaths); i++ {
 			cookie := privacyMetrics.SuspiciousPaths[i]
-	
+
 			partyType := "third-party"
 			if cookie.IsFirstParty {
 				partyType = "first-party"
@@ -546,7 +543,202 @@ func isFirstParty(cookieDomain, fullURL string) bool {
 	return isSuffix || isPrefix
 }
 
-// Make PrivacyMetric Struct
+// Function: Analyze Metrics
+// Operation: analyzes the privacy metrics collected from the privacyMetric struct
+// Return: A map of analysis results
+func AnalyzeMetrics(privacyMetric PrivacyMetric) map[string]float64 {
+	analysis := map[string]float64{
+		"secure":            0.0,
+		"firstParty":        0.0,
+		"thirdParty":        0.0,
+		"httpOnly":          0.0,
+		"sameSiteStrict":    0.0,
+		"sameSiteLax":       0.0,
+		"sameSiteNone":      0.0,
+		"sameSiteUnset":     0.0,
+		"sessionCookies":    0.0,
+		"persistentCookies": 0.0,
+	}
+
+	// --- Calculate Ratios of privacy metrics --- //
+	if privacyMetric.TotalCookies > 0 {
+		// Secure
+		if privacyMetric.TotalSecure > 0 {
+			analysis["secure"] = (float64(privacyMetric.TotalSecure) / float64(privacyMetric.TotalCookies)) * 100
+		}
+
+		// Party
+		if privacyMetric.TotalFirstParty > 0 {
+			analysis["firstParty"] = (float64(privacyMetric.TotalFirstParty) / float64(privacyMetric.TotalCookies)) * 100
+		}
+		if privacyMetric.TotalThirdParty > 0 {
+			analysis["thirdParty"] = (float64(privacyMetric.TotalThirdParty) / float64(privacyMetric.TotalCookies)) * 100
+		}
+
+		// HttpOnly
+		if privacyMetric.TotalHttpOnly > 0 {
+			analysis["httpOnly"] = (float64(privacyMetric.TotalHttpOnly) / float64(privacyMetric.TotalCookies)) * 100
+		}
+
+		// SameSite
+		if privacyMetric.SameSiteNone > 0 {
+			analysis["sameSiteStrict"] = (float64(privacyMetric.SameSiteStrict) / float64(privacyMetric.TotalCookies)) * 100
+		}
+		if privacyMetric.SameSiteLax > 0 {
+			analysis["sameSiteLax"] = (float64(privacyMetric.SameSiteLax) / float64(privacyMetric.TotalCookies)) * 100
+		}
+		if privacyMetric.SameSiteNone > 0 {
+			analysis["sameSiteNone"] = (float64(privacyMetric.SameSiteNone) / float64(privacyMetric.TotalCookies)) * 100
+		}
+		if privacyMetric.SameSiteUnset > 0 {
+			analysis["sameSiteUnset"] = (float64(privacyMetric.SameSiteUnset) / float64(privacyMetric.TotalCookies)) * 100
+		}
+
+		// Sessions
+		if privacyMetric.TotalSessionCookies > 0 {
+			analysis["sessionCookies"] = (float64(privacyMetric.TotalSessionCookies) / float64(privacyMetric.TotalCookies)) * 100
+		}
+		if privacyMetric.TotalPersistentCookies > 0 {
+			analysis["persistentCookies"] = (float64(privacyMetric.TotalPersistentCookies) / float64(privacyMetric.TotalCookies)) * 100
+		}
+	} else {
+		fmt.Println("No cookies collected, cannot analyze metrics.")
+		return nil
+	}
+
+	return analysis
+}
+
+// Make constants of ranges for the report to use
+// What defines a secure website with ratio of secure cookies?
+// how many is to many third-party cookies?
+
+// Function: Create Report
+// Operation: Creates a report based on the analysis of the privacy metrics.
+// Return: A string which contains the report summarizing the analysis
+func CreateReport(analysis map[string]float64) string {
+
+	var report string
+
+	// --- Create report based on analysis --- //
+	// It may be better if we used match cases for these reports?
+
+	// ### SECURE METRIC ###
+	// is it secure?
+	if analysis["secure"] >= SECURE_THRESHOLD {
+		report += fmt.Sprintf("The website uses the Secure flag in %.2f%% of its cookies, which "+
+			"helps prevent man-in-the-middle attacks by ensuring cookies are only sent over HTTPS. ",
+			analysis["secure"])
+	} else {
+		report += fmt.Sprintf("The website lacks sufficient use of the Secure flag with only %.2f%% "+
+			" of cookies being secure, meaning some cookies may be sent over unencrypted HTTP, "+
+			"increasing the risk of interception. ",
+			analysis["secure"])
+	}
+
+	report += "\n\n"
+
+	// ### PARTY METRIC ###
+	// What about first-party? to many? to few? enough? does it make sense?
+	if analysis["firstParty"] > 0 || analysis["thirdParty"] > 0 {
+
+		if analysis["firstParty"] > analysis["thirdParty"] {
+			report += fmt.Sprintf("There are more first-party cookies than third-party cookies (%.2f%% "+
+				"first-party), which is typically a good sign as it indicates the site is primarily "+
+				"using its own cookies for functionality and personalization. ",
+				analysis["firstParty"])
+		} else {
+			report += fmt.Sprintf("There are more third-party cookies than first-party cookies (%.2f%% "+
+				"third-party), which may indicate that the site relies heavily on external services for "+
+				"functionality, advertising, or analytics. ",
+				analysis["thirdParty"])
+		}
+	} else {
+		report += "There was an issue in detecting the sites first-party cookies and third-party " +
+			"cookies. "
+	}
+
+	report += "Below are the details of the first-party and third-party cookies:\n"
+	report += fmt.Sprintf("\t- First-Party: %.2f%%\n", analysis["firstParty"])
+	report += fmt.Sprintf("\t- Third-Party: %.2f%%\n", analysis["thirdParty"])
+	report += "\n"
+
+	// ### HTTPONLY METRIC ###
+	// is the ratio of HttpOnly valid?
+	if analysis["httpOnly"] >= HTTP_THRESHOLD {
+		report += fmt.Sprintf("%.2f%% of cookies use the HttpOnly flag, which helps protect session "+
+			"data from client-side scripts and reduces the risk of XSS attacks. ",
+			analysis["httpOnly"])
+		if analysis["secure"] < SECURE_THRESHOLD {
+			report += "However, the lack of Secure cookies limits the overall protection HttpOnly " +
+				"provides. "
+		}
+	} else if analysis["httpOnly"] == 0.0 {
+		report += "No HttpOnly cookies were found, which is a strong indicator of vulnerability to " +
+			"cross-site scripting (XSS) attacks. "
+	} else {
+		report += fmt.Sprintf("Only %.2f%% of cookies use the HttpOnly flag, which is below the recommended "+
+			"threshold. This may leave some session data vulnerable to client-side scripts. ",
+			analysis["httpOnly"])
+	}
+	report += "Below are the details of the HttpOnly attributes:\n"
+	report += fmt.Sprintf("\t- HttpOnly: %.2f%%\n", analysis["httpOnly"])
+	report += fmt.Sprintf("\t- Not HttpOnly: %.2f%%\n", analysis["httpOnly"])
+	report += "\n"
+
+	// ### SAMESITE METRIC ###
+	if analysis["sameSiteStrict"] >= SAMESITESTRICT_THRESHOLD {
+		report += fmt.Sprintf("Most cookies use SameSite=Strict (%.2f%% Strict), which prevents them from "+
+			"being sent in cross-site requests. This is good for defending against CSRF attacks, though it "+
+			"may reduce compatibility with some cross-site features. ",
+			analysis["sameSiteStrict"])
+	}
+	if analysis["sameSiteLax"] >= SAMESITELAX_THRESHOLD {
+		report += fmt.Sprintf("Most cookies use SameSite=Lax (%.2f%% Lax), a balanced setting that "+
+			"permits top-level navigation (e.g., links) while still protecting against most CSRF attacks. ",
+			analysis["sameSiteLax"])
+	}
+	if analysis["sameSiteNone"] >= SAMESITENONE_THRESHOLD {
+		report += fmt.Sprintf("Most cookies use SameSite=None (%.2f%% None), allowing them to be sent "+
+			"with all cross-site requests. This setting is commonly required for third-party cookies but "+
+			"must be paired with Secure to reduce risk. ",
+			analysis["sameSiteNone"])
+	}
+	if analysis["sameSiteUnset"] >= SAMESITEUNSET_THRESHOLD {
+		report += fmt.Sprintf("Most cookies have no SameSite attribute set (%.2f%% Unset), which could leave them "+
+			"vulnerable to CSRF or privacy leaks. ",
+			analysis["sameSiteUnset"])
+	}
+
+	report += "Below are the details of the SameSite attributes:\n"
+	report += fmt.Sprintf("\t- Strict: %.2f%%\n", analysis["sameSiteStrict"])
+	report += fmt.Sprintf("\t- Lax: %.2f%%\n", analysis["sameSiteLax"])
+	report += fmt.Sprintf("\t- None: %.2f%%\n", analysis["sameSiteNone"])
+	report += fmt.Sprintf("\t- Unset: %.2f%%\n", analysis["sameSiteUnset"])
+	report += "\n"
+
+	// ### SESSION METRIC ###
+	if analysis["sessionCookies"] >= 0 {
+		report += "there is at least one session cookie, which means you have logged in to at least one " +
+			"site. Session cookies are temporary and are deleted when the browser is closed. "
+	}
+
+	if analysis["sessionCookies"] >= SESSION_THRESHOLD {
+		report += "However, A significant number of cookies are session-based. "
+	}
+	if analysis["persistentCookies"] >= PERSISTENT_THRESHOLD {
+		report += "However, there are more Persistent cookies than session cookies. "
+	}
+
+	report += "Below are the details of the session and persistent cookies:\n"
+	report += fmt.Sprintf("\t- Session Cookies: %.2f%%\n", analysis["sessionCookies"])
+	report += fmt.Sprintf("\t- Persistent Cookies: %.2f%%\n", analysis["persistentCookies"])
+	report += "\n"
+
+	return report
+
+}
+
 // Make function to import packet data into struct.
 
 //Then can make application do all borwsers+ urls
@@ -560,4 +752,3 @@ func isFirstParty(cookieDomain, fullURL string) bool {
 //    2. Create a server that can analyze the HTTP headers
 //    3. Process the HTTP headers data
 //    4. Return the HTTP headers analysis results in JSON format
->>>>>>> a559c40c0d5ca94d0a0b2e6ed2fd194d208edda1
