@@ -13,7 +13,7 @@ func main() {
 	browser := flag.String("b", "chrome", "Other browser option selected.")
 	isHidden := flag.Bool("i", false, "Hides browser")
 	url := flag.String("u", "https://www.amazon.com", "URL for website to analyze")
-	duration := flag.Int("d", 2000, "Duration for the browser to run in milliseconds (default: 20000)")
+	duration := flag.Int("d", 20000, "Duration for the browser to run in milliseconds (default: 20000)")
 
 
 	// Parse command line flags
@@ -43,6 +43,6 @@ func main() {
 		fmt.Printf("Error appending report to file: %v\n", err)
 	}
 
-	// Print out the report gathered 
+	// Print out the report gathered from amazon
 	fmt.Println(data)
 }
