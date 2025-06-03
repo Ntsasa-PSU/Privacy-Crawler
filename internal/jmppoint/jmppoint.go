@@ -1,5 +1,7 @@
 package jmppoint
-
+import (
+	"privcrawler/internal/crawler"
+)
 var PORT int = 22
 
 // ---- DATA STRUCTURES ---- //
@@ -10,6 +12,7 @@ type ProcessOptions struct {
 	browser string
 	url     string
 	hidden  bool
+	duration int
 	verbose bool
 }
 
@@ -35,6 +38,7 @@ func defaultProcessOptions() ProcessOptions {
 	return ProcessOptions{
 		browser: chrome,
 		url:     "https://www.google.com",
+		duration: 2000,
 		hidden:  false,
 		verbose: false,
 	}
@@ -70,15 +74,14 @@ func WithVerbose(verbose bool) ProcessOptionsFunc {
 	}
 }
 
-// WithPort sets the port for the process
-func WithPort(port int) ProcessOptionsFunc {
+// WithDuration sets the duration for the process
+func WithDuration(duration int) ProcessOptionsFunc {
 	return func(opts *ProcessOptions) {
-		// Note: You'll need to add port to ProcessOptions struct if you want this
+		opts.duration = duration
 	}
 }
 
 // ---- CONSTRUCTOR ---- //
-
 func NewProcess(opts ...ProcessOptionsFunc) *Process {
 	o := defaultProcessOptions()
 
@@ -117,5 +120,16 @@ func (p *Process) IsVerbose() bool {
 // GetPort returns the port
 func (p *Process) GetPort() int {
 	return p.port
+}
+
+// Run executes the privacy crawl with the given options
+func (p *Process) Run() error {
+    return crawler.RunPrivacyCrawl(
+        p.options.browser,
+        p.options.hidden,
+        p.options.url,
+		p.options.duration,
+        p.options.verbose,
+    )
 }
 

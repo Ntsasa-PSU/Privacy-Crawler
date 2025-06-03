@@ -1,0 +1,75 @@
+
+=== Privacy Analysis Report ===
+Timestamp: 2025-06-02 21:40:29
+URL: https://www.youtube.com
+Browser: firefox
+Report:
+#----- Printing https://www.youtube.com: Cookies Privacy Metrics ------#
+Total Cookies: 8
+Total First-Party Cookies: 6
+Total Third-Party Cookies: 2
+Total Secure Domains: 8
+Total Unsecure Domains: 0
+No Suspicious Paths
+Total HttpOnly: 7
+Total Not HttpOnly: 1
+Total SameSite with Strict: 0
+Total SameSite with Lax: 0
+Total SameSite with None: 8
+Total SameSite with Unset: 0
+Total Session Cookies: 1
+Total Persistent Cookies: 7
+#--------------------------------------------#
+
+=== End Report ===
+
+
+=== Privacy Analysis Report ===
+Timestamp: 2025-06-02 21:41:01
+URL: https://www.youtube.com
+Browser: chrome
+Report:
+#----- Printing https://www.youtube.com: Cookies Privacy Metrics ------#
+Total Cookies: 7
+Total First-Party Cookies: 6
+Total Third-Party Cookies: 1
+Total Secure Domains: 7
+Total Unsecure Domains: 0
+No Suspicious Paths
+Total HttpOnly: 6
+Total Not HttpOnly: 1
+Total SameSite with Strict: 0
+Total SameSite with Lax: 2
+Total SameSite with None: 5
+Total SameSite with Unset: 0
+Total Session Cookies: 1
+Total Persistent Cookies: 6
+#--------------------------------------------#
+
+=== End Report ===
+
+
+=== Privacy Analysis Report ===
+Timestamp: 2025-06-02 21:42:04
+URL: https://www.youtube.com
+Browser: edge
+Report:
+#----- Printing https://www.youtube.com: Cookies Privacy Metrics ------#
+Total Cookies: 7
+Total First-Party Cookies: 6
+Total Third-Party Cookies: 1
+Total Secure Domains: 7
+Total Unsecure Domains: 0
+No Suspicious Paths
+Total HttpOnly: 6
+Total Not HttpOnly: 1
+Total SameSite with Strict: 0
+Total SameSite with Lax: 2
+Total SameSite with None: 5
+Total SameSite with Unset: 0
+Total Session Cookies: 1
+Total Persistent Cookies: 6
+#--------------------------------------------#
+
+=== End Report ===
+

@@ -816,6 +816,39 @@ func GetMetricsReport(privacyMetrics PrivacyMetric, metricName string) string {
 	return report.String()
 }
 
+// Function: RunPrivacyCrawl
+// Operation: Runs the complete privacy crawl process for a single URL
+// Return: error if any step fails
+func RunPrivacyCrawl(browser string, isHidden bool, url string, duration int, verbose bool) error {
+	// Get available browsers and verify the selected one
+	browserList := GetBrowsers(&verbose)
+	_, _, err := VerifyTargetBrowser(browserList, browser, &verbose)
+	if err != nil {
+		return err
+	}
+
+	// Declare structure for privacy metrics
+	privacyMetric := PrivacyMetric{}
+
+	// Fetch cookies
+	cookies := FetchCookies(browser, isHidden, url, &privacyMetric, &verbose, duration)
+	if cookies == nil {
+		return fmt.Errorf("failed to fetch cookies")
+	}
+
+	// Generate metrics report
+	urlTarget := url + ": Cookies"
+	data := GetMetricsReport(privacyMetric, urlTarget)
+
+	// Append data to file
+	err = AppendDataToFile(data, url, browser)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // Make function to import packet data into struct.
 
 //Then can make application do all borwsers+ urls

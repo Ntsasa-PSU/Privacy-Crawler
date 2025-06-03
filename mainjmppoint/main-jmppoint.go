@@ -8,9 +8,7 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/test", jmppoint.UserInputHandler)
-	http.HandleFunc("/run", jmppoint.GeneralHandler)
-	fmt.Println("Listening on :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	fmt.Println("Listening on : ",  jmppoint.PORT)
+	log.Fatal(http.ListenAndServe(":22", nil))
 }
 
