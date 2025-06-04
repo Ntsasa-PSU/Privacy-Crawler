@@ -5,6 +5,8 @@ import (
 )
 
 func main() {
-	jmppoint.RunServer()
+	//jmppoint.RunServer()
+	jmppoint.GenerateTotalsFile()
+	jmppoint.BrowserRanking()
 }
 

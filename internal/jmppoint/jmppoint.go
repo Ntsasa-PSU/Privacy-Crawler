@@ -1,13 +1,39 @@
 package jmppoint
 
 import (
+	"bufio"
+	"fmt"
+	"os"
 	"privcrawler/internal/crawler"
+	"regexp"
+	"strconv"
+	"strings"
 	"sync"
+	"time"
 )
 
 var PORT int = 22
 
 // ---- DATA STRUCTURES ---- //
+
+// Browser Statitics: Hold totaled statistics for a browser
+type BrowserStats struct {
+	Browser                string
+	TotalReports           int
+	TotalCookies           int
+	TotalFirstParty        int
+	TotalThirdParty        int
+	TotalSecure            int
+	TotalUnsecure          int
+	TotalHttpOnly          int
+	TotalNotHttpOnly       int
+	TotalSameSiteStrict    int
+	TotalSameSiteLax       int
+	TotalSameSiteNone      int
+	TotalSessionCookies    int
+	TotalPersistentCookies int
+	SuspiciousPathsCount   int
+}
 
 // Options: Represents tags for the main method.
 type ProcessOptions struct {
@@ -1698,4 +1724,373 @@ func RunServer() error {
 	wg.Wait()
 
 	return nil
+}
+
+// GenerateTotalsFile creates DATA_TOTAL.txt with browser totals
+func GenerateTotalsFile() {
+	fmt.Println("Starting to parse DATA.txt...")
+
+	file, err := os.Open("./DATA.txt")
+	if err != nil {
+		fmt.Printf("Error opening DATA.txt: %v\n", err)
+		return
+	}
+	defer file.Close()
+
+	// Browser totals
+	chromeStats := &BrowserStats{Browser: "chrome"}
+	edgeStats := &BrowserStats{Browser: "edge"}
+	firefoxStats := &BrowserStats{Browser: "firefox"}
+	safariStats := &BrowserStats{Browser: "safari"}
+
+	scanner := bufio.NewScanner(file)
+	var currentBrowser string
+	inReport := false
+
+	// Simple regex patterns
+	browserRegex := regexp.MustCompile(`Browser: (\w+)`)
+	totalCookiesRegex := regexp.MustCompile(`Total Cookies: (\d+)`)
+	firstPartyRegex := regexp.MustCompile(`Total First-Party Cookies: (\d+)`)
+	thirdPartyRegex := regexp.MustCompile(`Total Third-Party Cookies: (\d+)`)
+	secureRegex := regexp.MustCompile(`Total Secure Domains: (\d+)`)
+	unsecureRegex := regexp.MustCompile(`Total Unsecure Domains: (\d+)`)
+	httpOnlyRegex := regexp.MustCompile(`Total HttpOnly: (\d+)`)
+	notHttpOnlyRegex := regexp.MustCompile(`Total Not HttpOnly: (\d+)`)
+	sameSiteStrictRegex := regexp.MustCompile(`Total SameSite with Strict: (\d+)`)
+	sameSiteLaxRegex := regexp.MustCompile(`Total SameSite with Lax: (\d+)`)
+	sameSiteNoneRegex := regexp.MustCompile(`Total SameSite with None: (\d+)`)
+	sessionRegex := regexp.MustCompile(`Total Session Cookies: (\d+)`)
+	persistentRegex := regexp.MustCompile(`Total Persistent Cookies: (\d+)`)
+
+	fmt.Println("Parsing browser data...")
+
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if strings.Contains(line, "=== Privacy Analysis Report ===") {
+			inReport = true
+			continue
+		}
+
+		if strings.Contains(line, "=== End Report ===") {
+			inReport = false
+			currentBrowser = ""
+			continue
+		}
+
+		if !inReport {
+			continue
+		}
+
+		// Get browser name
+		if matches := browserRegex.FindStringSubmatch(line); matches != nil {
+			currentBrowser = matches[1]
+			switch currentBrowser {
+			case "chrome":
+				chromeStats.TotalReports++
+			case "edge":
+				edgeStats.TotalReports++
+			case "firefox":
+				firefoxStats.TotalReports++
+			case "safari":
+				safariStats.TotalReports++
+			}
+			continue
+		}
+
+		if currentBrowser == "" {
+			continue
+		}
+
+		var currentStats *BrowserStats
+		switch currentBrowser {
+		case "chrome":
+			currentStats = chromeStats
+		case "edge":
+			currentStats = edgeStats
+		case "firefox":
+			currentStats = firefoxStats
+		case "safari":
+			currentStats = safariStats
+		default:
+			continue
+		}
+
+		// Extract and add values
+		if matches := totalCookiesRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalCookies += val
+			}
+		}
+		if matches := firstPartyRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalFirstParty += val
+			}
+		}
+		if matches := thirdPartyRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalThirdParty += val
+			}
+		}
+		if matches := secureRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalSecure += val
+			}
+		}
+		if matches := unsecureRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalUnsecure += val
+			}
+		}
+		if matches := httpOnlyRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalHttpOnly += val
+			}
+		}
+		if matches := notHttpOnlyRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalNotHttpOnly += val
+			}
+		}
+		if matches := sameSiteStrictRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalSameSiteStrict += val
+			}
+		}
+		if matches := sameSiteLaxRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalSameSiteLax += val
+			}
+		}
+		if matches := sameSiteNoneRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalSameSiteNone += val
+			}
+		}
+		if matches := sessionRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalSessionCookies += val
+			}
+		}
+		if matches := persistentRegex.FindStringSubmatch(line); matches != nil {
+			if val, err := strconv.Atoi(matches[1]); err == nil {
+				currentStats.TotalPersistentCookies += val
+			}
+		}
+	}
+
+	fmt.Println("Writing totals to DATA_TOTAL.txt...")
+
+	// Write to file
+	outFile, err := os.Create("DATA_TOTAL.txt")
+	if err != nil {
+		fmt.Printf("Error creating DATA_TOTAL.txt: %v\n", err)
+		return
+	}
+	defer outFile.Close()
+
+	fmt.Fprintf(outFile, "=== BROWSER TOTALS ===\n")
+	fmt.Fprintf(outFile, "Generated: %s\n\n", time.Now().Format("2006-01-02 15:04:05"))
+
+	// Write Chrome totals
+	fmt.Fprintf(outFile, "CHROME:\n")
+	fmt.Fprintf(outFile, "Total Reports: %d\n", chromeStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", chromeStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", chromeStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", chromeStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", chromeStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", chromeStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", chromeStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", chromeStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", chromeStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", chromeStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", chromeStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", chromeStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", chromeStats.TotalPersistentCookies)
+
+	// Write Edge totals
+	fmt.Fprintf(outFile, "EDGE:\n")
+	fmt.Fprintf(outFile, "Total Reports: %d\n", edgeStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", edgeStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", edgeStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", edgeStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", edgeStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", edgeStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", edgeStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", edgeStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", edgeStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", edgeStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", edgeStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", edgeStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", edgeStats.TotalPersistentCookies)
+
+	// Write Firefox totals
+	fmt.Fprintf(outFile, "FIREFOX:\n")
+	fmt.Fprintf(outFile, "Total Reports: %d\n", firefoxStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", firefoxStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", firefoxStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", firefoxStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", firefoxStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", firefoxStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", firefoxStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", firefoxStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", firefoxStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", firefoxStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", firefoxStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", firefoxStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", firefoxStats.TotalPersistentCookies)
+
+	// Write Safari totals
+	fmt.Fprintf(outFile, "SAFARI:\n")
+	fmt.Fprintf(outFile, "Total Reports: %d\n", safariStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", safariStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", safariStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", safariStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", safariStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", safariStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", safariStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", safariStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", safariStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", safariStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", safariStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", safariStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n", safariStats.TotalPersistentCookies)
+
+	fmt.Println("DATA_TOTAL.txt created successfully!")
+}
+
+func BrowserRanking() {
+    fmt.Println("Analyzing browser rankings...")
+    
+    file, err := os.Open("./DATA_TOTAL.txt")
+    if err != nil {
+        fmt.Printf("Error opening DATA_TOTAL.txt: %v\n", err)
+        return
+    }
+    defer file.Close()
+
+    // Parse the existing DATA_TOTAL.txt format
+    chromeStats := &BrowserStats{Browser: "chrome"}
+    edgeStats := &BrowserStats{Browser: "edge"}
+    firefoxStats := &BrowserStats{Browser: "firefox"}
+    safariStats := &BrowserStats{Browser: "safari"}
+    
+    scanner := bufio.NewScanner(file)
+    var currentStats *BrowserStats
+    
+    for scanner.Scan() {
+        line := strings.TrimSpace(scanner.Text())
+        
+        // Identify which browser section we're in
+        if line == "CHROME:" {
+            currentStats = chromeStats
+            continue
+        } else if line == "EDGE:" {
+            currentStats = edgeStats
+            continue
+        } else if line == "FIREFOX:" {
+            currentStats = firefoxStats
+            continue
+        } else if line == "SAFARI:" {
+            currentStats = safariStats
+            continue
+        }
+        
+        if currentStats == nil {
+            continue
+        }
+        
+        // Parse the values
+        if strings.HasPrefix(line, "Total Cookies: ") {
+            fmt.Sscanf(line, "Total Cookies: %d", &currentStats.TotalCookies)
+        } else if strings.HasPrefix(line, "Third-Party Cookies: ") {
+            fmt.Sscanf(line, "Third-Party Cookies: %d", &currentStats.TotalThirdParty)
+        } else if strings.HasPrefix(line, "Secure Domains: ") {
+            fmt.Sscanf(line, "Secure Domains: %d", &currentStats.TotalSecure)
+        } else if strings.HasPrefix(line, "HttpOnly: ") {
+            fmt.Sscanf(line, "HttpOnly: %d", &currentStats.TotalHttpOnly)
+        }
+    }
+
+    // Create simple rankings file
+    outFile, err := os.Create("SIMPLE_RANKINGS.txt")
+    if err != nil {
+        fmt.Printf("Error creating SIMPLE_RANKINGS.txt: %v\n", err)
+        return
+    }
+    defer outFile.Close()
+
+    fmt.Fprintf(outFile, "=== SIMPLE BROWSER RANKINGS ===\n\n")
+
+    // 1. Fewest Total Cookies
+    browsers := []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+    
+    fmt.Fprintf(outFile, "1. FEWEST COOKIES (Better for Privacy):\n")
+    
+    // Sort by total cookies
+    for i := 0; i < len(browsers)-1; i++ {
+        for j := i + 1; j < len(browsers); j++ {
+            if browsers[i].TotalCookies > browsers[j].TotalCookies {
+                browsers[i], browsers[j] = browsers[j], browsers[i]
+            }
+        }
+    }
+    
+    for i, browser := range browsers {
+        fmt.Fprintf(outFile, "   %d. %s: %d cookies\n", i+1, strings.ToUpper(browser.Browser), browser.TotalCookies)
+    }
+    
+    fmt.Fprintf(outFile, "\n2. FEWEST THIRD-PARTY COOKIES:\n")
+    
+    // Reset and sort by third-party cookies
+    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+    for i := 0; i < len(browsers)-1; i++ {
+        for j := i + 1; j < len(browsers); j++ {
+            if browsers[i].TotalThirdParty > browsers[j].TotalThirdParty {
+                browsers[i], browsers[j] = browsers[j], browsers[i]
+            }
+        }
+    }
+    
+    for i, browser := range browsers {
+        fmt.Fprintf(outFile, "   %d. %s: %d third-party\n", i+1, strings.ToUpper(browser.Browser), browser.TotalThirdParty)
+    }
+    
+    fmt.Fprintf(outFile, "\n3. MOST SECURE COOKIES:\n")
+    
+    // Reset and sort by secure cookies (descending)
+    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+    for i := 0; i < len(browsers)-1; i++ {
+        for j := i + 1; j < len(browsers); j++ {
+            if browsers[i].TotalSecure < browsers[j].TotalSecure {
+                browsers[i], browsers[j] = browsers[j], browsers[i]
+            }
+        }
+    }
+    
+    for i, browser := range browsers {
+        fmt.Fprintf(outFile, "   %d. %s: %d secure\n", i+1, strings.ToUpper(browser.Browser), browser.TotalSecure)
+    }
+    
+    // Privacy winner (fewest total + fewest third-party)
+    fmt.Fprintf(outFile, "\n=== PRIVACY WINNER ===\n")
+    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+    
+    // Scoring: total cookies + (third-party * 2) = lower is better
+    minScore := 999999
+    winner := ""
+    
+    for _, browser := range browsers {
+        score := browser.TotalCookies + (browser.TotalThirdParty * 2)
+        if score < minScore {
+            minScore = score
+            winner = browser.Browser
+        }
+        fmt.Fprintf(outFile, "%s: %d total + %d third-party = %d points\n", 
+            strings.ToUpper(browser.Browser), browser.TotalCookies, browser.TotalThirdParty, score)
+    }
+    
+    fmt.Fprintf(outFile, "\nWINNER: %s (lowest score = best privacy)\n", strings.ToUpper(winner))
+
+    fmt.Println("Simple rankings saved to: SIMPLE_RANKINGS.txt")
 }
