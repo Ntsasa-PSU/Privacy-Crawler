@@ -60,7 +60,7 @@ const (
 	chrome   = "chrome"
 	firefox  = "firefox"
 	chromium = "chromium"
-	safari   = "safari"
+	webkit   = "webkit" // Changed from safari
 )
 
 func defaultProcessOptions() ProcessOptions {
@@ -178,8 +178,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_0 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(0))
-		safari_amazon_0.Run()
+		webkit_amazon_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(0)) // Changed from safari
+		webkit_amazon_0.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -199,8 +199,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_5 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(5000))
-		safari_amazon_5.Run()
+		webkit_amazon_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(5000))
+		webkit_amazon_5.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -220,8 +220,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_10 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(10000))
-		safari_amazon_10.Run()
+		webkit_amazon_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(10000))
+		webkit_amazon_10.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -241,8 +241,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_15 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(15000))
-		safari_amazon_15.Run()
+		webkit_amazon_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(15000))
+		webkit_amazon_15.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -262,8 +262,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_20 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(20000))
-		safari_amazon_20.Run()
+		webkit_amazon_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(20000))
+		webkit_amazon_20.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -283,8 +283,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer amazonWg.Done()
-		safari_amazon_25 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(25000))
-		safari_amazon_25.Run()
+		webkit_amazon_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.amazon.com"), WithDuration(25000))
+		webkit_amazon_25.Run()
 	}()
 	go func() {
 		defer amazonWg.Done()
@@ -312,8 +312,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_0 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(0))
-		safari_yahoo_0.Run()
+		webkit_yahoo_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(0))
+		webkit_yahoo_0.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -333,8 +333,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_5 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(5000))
-		safari_yahoo_5.Run()
+		webkit_yahoo_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(5000))
+		webkit_yahoo_5.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -354,8 +354,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_10 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(10000))
-		safari_yahoo_10.Run()
+		webkit_yahoo_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(10000))
+		webkit_yahoo_10.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -375,8 +375,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_15 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(15000))
-		safari_yahoo_15.Run()
+		webkit_yahoo_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(15000))
+		webkit_yahoo_15.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -396,8 +396,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_20 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(20000))
-		safari_yahoo_20.Run()
+		webkit_yahoo_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(20000))
+		webkit_yahoo_20.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -417,8 +417,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer yahooWg.Done()
-		safari_yahoo_25 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(25000))
-		safari_yahoo_25.Run()
+		webkit_yahoo_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.yahoo.com"), WithDuration(25000))
+		webkit_yahoo_25.Run()
 	}()
 	go func() {
 		defer yahooWg.Done()
@@ -446,8 +446,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_0 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(0))
-		safari_reddit_0.Run()
+		webkit_reddit_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(0))
+		webkit_reddit_0.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -467,8 +467,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_5 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(5000))
-		safari_reddit_5.Run()
+		webkit_reddit_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(5000))
+		webkit_reddit_5.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -488,8 +488,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_10 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(10000))
-		safari_reddit_10.Run()
+		webkit_reddit_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(10000))
+		webkit_reddit_10.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -509,8 +509,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_15 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(15000))
-		safari_reddit_15.Run()
+		webkit_reddit_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(15000))
+		webkit_reddit_15.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -530,8 +530,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_20 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(20000))
-		safari_reddit_20.Run()
+		webkit_reddit_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(20000))
+		webkit_reddit_20.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -551,8 +551,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer redditWg.Done()
-		safari_reddit_25 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(25000))
-		safari_reddit_25.Run()
+		webkit_reddit_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.reddit.com"), WithDuration(25000))
+		webkit_reddit_25.Run()
 	}()
 	go func() {
 		defer redditWg.Done()
@@ -580,8 +580,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_0 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(0))
-		safari_pinterest_0.Run()
+		webkit_pinterest_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(0))
+		webkit_pinterest_0.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -601,8 +601,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_5 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(5000))
-		safari_pinterest_5.Run()
+		webkit_pinterest_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(5000))
+		webkit_pinterest_5.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -622,8 +622,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_10 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(10000))
-		safari_pinterest_10.Run()
+		webkit_pinterest_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(10000))
+		webkit_pinterest_10.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -643,8 +643,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_15 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(15000))
-		safari_pinterest_15.Run()
+		webkit_pinterest_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(15000))
+		webkit_pinterest_15.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -664,8 +664,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_20 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(20000))
-		safari_pinterest_20.Run()
+		webkit_pinterest_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(20000))
+		webkit_pinterest_20.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -685,8 +685,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pinterestWg.Done()
-		safari_pinterest_25 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(25000))
-		safari_pinterest_25.Run()
+		webkit_pinterest_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.pinterest.com"), WithDuration(25000))
+		webkit_pinterest_25.Run()
 	}()
 	go func() {
 		defer pinterestWg.Done()
@@ -714,8 +714,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_0 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(0))
-		safari_fandom_0.Run()
+		webkit_fandom_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(0))
+		webkit_fandom_0.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -735,8 +735,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_5 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(5000))
-		safari_fandom_5.Run()
+		webkit_fandom_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(5000))
+		webkit_fandom_5.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -756,8 +756,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_10 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(10000))
-		safari_fandom_10.Run()
+		webkit_fandom_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(10000))
+		webkit_fandom_10.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -777,8 +777,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_15 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(15000))
-		safari_fandom_15.Run()
+		webkit_fandom_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(15000))
+		webkit_fandom_15.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -798,8 +798,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_20 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(20000))
-		safari_fandom_20.Run()
+		webkit_fandom_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(20000))
+		webkit_fandom_20.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -819,8 +819,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fandomWg.Done()
-		safari_fandom_25 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(25000))
-		safari_fandom_25.Run()
+		webkit_fandom_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.fandom.com"), WithDuration(25000))
+		webkit_fandom_25.Run()
 	}()
 	go func() {
 		defer fandomWg.Done()
@@ -848,8 +848,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_0 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(0))
-		safari_pornhub_0.Run()
+		webkit_pornhub_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(0))
+		webkit_pornhub_0.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -869,8 +869,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_5 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(5000))
-		safari_pornhub_5.Run()
+		webkit_pornhub_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(5000))
+		webkit_pornhub_5.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -890,8 +890,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_10 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(10000))
-		safari_pornhub_10.Run()
+		webkit_pornhub_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(10000))
+		webkit_pornhub_10.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -911,8 +911,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_15 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(15000))
-		safari_pornhub_15.Run()
+		webkit_pornhub_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(15000))
+		webkit_pornhub_15.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -932,8 +932,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_20 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(20000))
-		safari_pornhub_20.Run()
+		webkit_pornhub_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(20000))
+		webkit_pornhub_20.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -953,8 +953,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer pornhubWg.Done()
-		safari_pornhub_25 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(25000))
-		safari_pornhub_25.Run()
+		webkit_pornhub_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.pornhub.com"), WithDuration(25000))
+		webkit_pornhub_25.Run()
 	}()
 	go func() {
 		defer pornhubWg.Done()
@@ -982,8 +982,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_0 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(0))
-		safari_soap2day_0.Run()
+		webkit_soap2day_0 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(0))
+		webkit_soap2day_0.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1003,8 +1003,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_5 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(5000))
-		safari_soap2day_5.Run()
+		webkit_soap2day_5 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(5000))
+		webkit_soap2day_5.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1024,8 +1024,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_10 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(10000))
-		safari_soap2day_10.Run()
+		webkit_soap2day_10 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(10000))
+		webkit_soap2day_10.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1045,8 +1045,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_15 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(15000))
-		safari_soap2day_15.Run()
+		webkit_soap2day_15 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(15000))
+		webkit_soap2day_15.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1066,8 +1066,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_20 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(20000))
-		safari_soap2day_20.Run()
+		webkit_soap2day_20 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(20000))
+		webkit_soap2day_20.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1087,8 +1087,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer soap2dayWg.Done()
-		safari_soap2day_25 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(25000))
-		safari_soap2day_25.Run()
+		webkit_soap2day_25 := NewProcess(WithBrowser(webkit), WithURL("https://soap2day.to"), WithDuration(25000))
+		webkit_soap2day_25.Run()
 	}()
 	go func() {
 		defer soap2dayWg.Done()
@@ -1116,8 +1116,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_0 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(0))
-		safari_xvideos_0.Run()
+		webkit_xvideos_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(0))
+		webkit_xvideos_0.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1137,8 +1137,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_5 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(5000))
-		safari_xvideos_5.Run()
+		webkit_xvideos_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(5000))
+		webkit_xvideos_5.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1158,8 +1158,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_10 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(10000))
-		safari_xvideos_10.Run()
+		webkit_xvideos_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(10000))
+		webkit_xvideos_10.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1179,8 +1179,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_15 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(15000))
-		safari_xvideos_15.Run()
+		webkit_xvideos_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(15000))
+		webkit_xvideos_15.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1200,8 +1200,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_20 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(20000))
-		safari_xvideos_20.Run()
+		webkit_xvideos_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(20000))
+		webkit_xvideos_20.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1221,8 +1221,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer xvideosWg.Done()
-		safari_xvideos_25 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(25000))
-		safari_xvideos_25.Run()
+		webkit_xvideos_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.xvideos.com"), WithDuration(25000))
+		webkit_xvideos_25.Run()
 	}()
 	go func() {
 		defer xvideosWg.Done()
@@ -1250,8 +1250,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_0 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(0))
-		safari_fastdownload_0.Run()
+		webkit_fastdownload_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(0))
+		webkit_fastdownload_0.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1271,8 +1271,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_5 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(5000))
-		safari_fastdownload_5.Run()
+		webkit_fastdownload_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(5000))
+		webkit_fastdownload_5.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1292,8 +1292,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_10 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(10000))
-		safari_fastdownload_10.Run()
+		webkit_fastdownload_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(10000))
+		webkit_fastdownload_10.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1313,8 +1313,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_15 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(15000))
-		safari_fastdownload_15.Run()
+		webkit_fastdownload_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(15000))
+		webkit_fastdownload_15.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1334,8 +1334,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_20 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(20000))
-		safari_fastdownload_20.Run()
+		webkit_fastdownload_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(20000))
+		webkit_fastdownload_20.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1355,8 +1355,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
-		safari_fastdownload_25 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(25000))
-		safari_fastdownload_25.Run()
+		webkit_fastdownload_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.fastdownload.com"), WithDuration(25000))
+		webkit_fastdownload_25.Run()
 	}()
 	go func() {
 		defer fastdownloadWg.Done()
@@ -1384,8 +1384,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_0 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(0))
-		safari_endace_0.Run()
+		webkit_endace_0 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(0))
+		webkit_endace_0.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1405,8 +1405,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_5 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(5000))
-		safari_endace_5.Run()
+		webkit_endace_5 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(5000))
+		webkit_endace_5.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1426,8 +1426,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_10 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(10000))
-		safari_endace_10.Run()
+		webkit_endace_10 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(10000))
+		webkit_endace_10.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1447,8 +1447,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_15 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(15000))
-		safari_endace_15.Run()
+		webkit_endace_15 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(15000))
+		webkit_endace_15.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1468,8 +1468,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_20 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(20000))
-		safari_endace_20.Run()
+		webkit_endace_20 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(20000))
+		webkit_endace_20.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1489,8 +1489,8 @@ func RunServer() error {
 	}()
 	go func() {
 		defer endaceWg.Done()
-		safari_endace_25 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(25000))
-		safari_endace_25.Run()
+		webkit_endace_25 := NewProcess(WithBrowser(webkit), WithURL("https://www.endace.com"), WithDuration(25000))
+		webkit_endace_25.Run()
 	}()
 	go func() {
 		defer endaceWg.Done()
@@ -1526,7 +1526,7 @@ func GenerateTotalsFile() {
 	chromeStats := &BrowserStats{Browser: "chrome"}
 	chromiumStats := &BrowserStats{Browser: "chromium"}
 	firefoxStats := &BrowserStats{Browser: "firefox"}
-	safariStats := &BrowserStats{Browser: "safari"}
+	webkitStats := &BrowserStats{Browser: "webkit"} // Changed from safariStats
 
 	scanner := bufio.NewScanner(file)
 	var currentBrowser string
@@ -1577,8 +1577,8 @@ func GenerateTotalsFile() {
 				chromiumStats.TotalReports++
 			case "firefox":
 				firefoxStats.TotalReports++
-			case "safari":
-				safariStats.TotalReports++
+			case "webkit": // Changed from safari
+				webkitStats.TotalReports++
 			}
 			continue
 		}
@@ -1595,8 +1595,8 @@ func GenerateTotalsFile() {
 			currentStats = chromiumStats
 		case "firefox":
 			currentStats = firefoxStats
-		case "safari":
-			currentStats = safariStats
+		case "webkit": // Changed from safari
+			currentStats = webkitStats
 		default:
 			continue
 		}
@@ -1675,6 +1675,7 @@ func GenerateTotalsFile() {
 	defer outFile.Close()
 
 	fmt.Fprintf(outFile, "=== BROWSER TOTALS ===\n")
+
 	fmt.Fprintf(outFile, "Generated: %s\n\n", time.Now().Format("2006-01-02 15:04:05"))
 
 	// Write Chrome totals
@@ -1709,21 +1710,21 @@ func GenerateTotalsFile() {
 	fmt.Fprintf(outFile, "Session Cookies: %d\n", chromiumStats.TotalSessionCookies)
 	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", chromiumStats.TotalPersistentCookies)
 
-	// Write Safari totals
-	fmt.Fprintf(outFile, "SAFARI:\n")
-	fmt.Fprintf(outFile, "Total Reports: %d\n", safariStats.TotalReports)
-	fmt.Fprintf(outFile, "Total Cookies: %d\n", safariStats.TotalCookies)
-	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", safariStats.TotalFirstParty)
-	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", safariStats.TotalThirdParty)
-	fmt.Fprintf(outFile, "Secure Domains: %d\n", safariStats.TotalSecure)
-	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", safariStats.TotalUnsecure)
-	fmt.Fprintf(outFile, "HttpOnly: %d\n", safariStats.TotalHttpOnly)
-	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", safariStats.TotalNotHttpOnly)
-	fmt.Fprintf(outFile, "SameSite Strict: %d\n", safariStats.TotalSameSiteStrict)
-	fmt.Fprintf(outFile, "SameSite Lax: %d\n", safariStats.TotalSameSiteLax)
-	fmt.Fprintf(outFile, "SameSite None: %d\n", safariStats.TotalSameSiteNone)
-	fmt.Fprintf(outFile, "Session Cookies: %d\n", safariStats.TotalSessionCookies)
-	fmt.Fprintf(outFile, "Persistent Cookies: %d\n", safariStats.TotalPersistentCookies)
+	// Write WebKit totals (instead of Safari)
+	fmt.Fprintf(outFile, "WEBKIT:\n") // Changed from SAFARI:
+	fmt.Fprintf(outFile, "Total Reports: %d\n", webkitStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", webkitStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", webkitStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", webkitStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", webkitStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", webkitStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", webkitStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", webkitStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", webkitStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", webkitStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", webkitStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", webkitStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n", webkitStats.TotalPersistentCookies)
 
 	fmt.Println("DATA_TOTAL.txt created successfully!")
 }
@@ -1742,7 +1743,7 @@ func BrowserRanking() {
 	chromeStats := &BrowserStats{Browser: "chrome"}
 	chromiumStats := &BrowserStats{Browser: "chromium"}
 	firefoxStats := &BrowserStats{Browser: "firefox"}
-	safariStats := &BrowserStats{Browser: "safari"}
+	webkitStats := &BrowserStats{Browser: "webkit"} // Changed from safariStats
 
 	scanner := bufio.NewScanner(file)
 	var currentStats *BrowserStats
@@ -1760,8 +1761,8 @@ func BrowserRanking() {
 		} else if line == "FIREFOX:" {
 			currentStats = firefoxStats
 			continue
-		} else if line == "SAFARI:" {
-			currentStats = safariStats
+		} else if line == "WEBKIT:" { // Changed from SAFARI:
+			currentStats = webkitStats
 			continue
 		}
 
@@ -1792,7 +1793,7 @@ func BrowserRanking() {
 	fmt.Fprintf(outFile, "=== SIMPLE BROWSER RANKINGS ===\n\n")
 
 	// 1. Fewest Total Cookies
-	browsers := []*BrowserStats{chromeStats, chromiumStats, firefoxStats, safariStats}
+	browsers := []*BrowserStats{chromeStats, chromiumStats, firefoxStats, webkitStats}
 
 	fmt.Fprintf(outFile, "1. FEWEST COOKIES (Better for Privacy):\n")
 
@@ -1812,7 +1813,7 @@ func BrowserRanking() {
 	fmt.Fprintf(outFile, "\n2. FEWEST THIRD-PARTY COOKIES:\n")
 
 	// Reset and sort by third-party cookies
-	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, safariStats}
+	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, webkitStats}
 	for i := 0; i < len(browsers)-1; i++ {
 		for j := i + 1; j < len(browsers); j++ {
 			if browsers[i].TotalThirdParty > browsers[j].TotalThirdParty {
@@ -1828,7 +1829,7 @@ func BrowserRanking() {
 	fmt.Fprintf(outFile, "\n3. MOST SECURE COOKIES:\n")
 
 	// Reset and sort by secure cookies (descending)
-	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, safariStats}
+	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, webkitStats}
 	for i := 0; i < len(browsers)-1; i++ {
 		for j := i + 1; j < len(browsers); j++ {
 			if browsers[i].TotalSecure < browsers[j].TotalSecure {
@@ -1843,7 +1844,7 @@ func BrowserRanking() {
 
 	// Privacy winner (fewest total + fewest third-party)
 	fmt.Fprintf(outFile, "\n=== PRIVACY WINNER ===\n")
-	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, safariStats}
+	browsers = []*BrowserStats{chromeStats, chromiumStats, firefoxStats, webkitStats}
 
 	// Scoring: total cookies + (third-party * 2) = lower is better
 	minScore := 999999
