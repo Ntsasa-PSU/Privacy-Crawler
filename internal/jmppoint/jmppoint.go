@@ -163,1570 +163,1355 @@ func (p *Process) Run() error {
 }
 
 func RunServer() error {
-	var wg sync.WaitGroup
-
-	// Count total processes: 9 websites × 4 browsers × 6 durations = 216 processes
-	wg.Add(216)
-
-	// ---- Start all processes immediately ---- //
+	fmt.Println("Starting privacy crawler with website-by-website processing...")
 
 	// -- WEBSITE: AMAZON -- //
-	// - Instant - //
+	fmt.Println("Processing AMAZON...")
+	var amazonWg sync.WaitGroup
+	amazonWg.Add(24) // 4 browsers × 6 durations = 24 processes
+
+	// All Amazon processes
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(0))
 		chrome_amazon_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_0 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(0))
 		safari_amazon_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(0))
 		firefox_amazon_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_0 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(0))
 		edge_amazon_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(5000))
 		chrome_amazon_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_5 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(5000))
 		safari_amazon_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(5000))
 		firefox_amazon_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_5 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(5000))
 		edge_amazon_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(10000))
 		chrome_amazon_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_10 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(10000))
 		safari_amazon_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(10000))
 		firefox_amazon_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_10 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(10000))
 		edge_amazon_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(15000))
 		chrome_amazon_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_15 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(15000))
 		safari_amazon_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(15000))
 		firefox_amazon_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_15 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(15000))
 		edge_amazon_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(20000))
 		chrome_amazon_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_20 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(20000))
 		safari_amazon_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(20000))
 		firefox_amazon_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_20 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(20000))
 		edge_amazon_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		chrome_amazon_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(25000))
 		chrome_amazon_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		safari_amazon_25 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(25000))
 		safari_amazon_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		firefox_amazon_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(25000))
 		firefox_amazon_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer amazonWg.Done()
 		edge_amazon_25 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(25000))
 		edge_amazon_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_amazon_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.amazon.com"), WithDuration(30000))
-		chrome_amazon_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_amazon_30 := NewProcess(WithBrowser(safari), WithURL("https://www.amazon.com"), WithDuration(30000))
-		safari_amazon_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_amazon_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.amazon.com"), WithDuration(30000))
-		firefox_amazon_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_amazon_30 := NewProcess(WithBrowser(edge), WithURL("https://www.amazon.com"), WithDuration(30000))
-		edge_amazon_30.Run()
-	}()
+	amazonWg.Wait()
+	fmt.Println("AMAZON completed!")
 
 	// -- WEBSITE: YAHOO -- //
-	// - Instant - //
+	fmt.Println("Processing YAHOO...")
+	var yahooWg sync.WaitGroup
+	yahooWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(0))
 		chrome_yahoo_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_0 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(0))
 		safari_yahoo_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(0))
 		firefox_yahoo_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_0 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(0))
 		edge_yahoo_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(5000))
 		chrome_yahoo_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_5 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(5000))
 		safari_yahoo_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(5000))
 		firefox_yahoo_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_5 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(5000))
 		edge_yahoo_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(10000))
 		chrome_yahoo_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_10 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(10000))
 		safari_yahoo_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(10000))
 		firefox_yahoo_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_10 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(10000))
 		edge_yahoo_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(15000))
 		chrome_yahoo_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_15 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(15000))
 		safari_yahoo_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(15000))
 		firefox_yahoo_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_15 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(15000))
 		edge_yahoo_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(20000))
 		chrome_yahoo_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_20 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(20000))
 		safari_yahoo_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(20000))
 		firefox_yahoo_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_20 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(20000))
 		edge_yahoo_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		chrome_yahoo_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(25000))
 		chrome_yahoo_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		safari_yahoo_25 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(25000))
 		safari_yahoo_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		firefox_yahoo_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(25000))
 		firefox_yahoo_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer yahooWg.Done()
 		edge_yahoo_25 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(25000))
 		edge_yahoo_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_yahoo_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.yahoo.com"), WithDuration(30000))
-		chrome_yahoo_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_yahoo_30 := NewProcess(WithBrowser(safari), WithURL("https://www.yahoo.com"), WithDuration(30000))
-		safari_yahoo_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_yahoo_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.yahoo.com"), WithDuration(30000))
-		firefox_yahoo_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_yahoo_30 := NewProcess(WithBrowser(edge), WithURL("https://www.yahoo.com"), WithDuration(30000))
-		edge_yahoo_30.Run()
-	}()
+	yahooWg.Wait()
+	fmt.Println("YAHOO completed!")
 
 	// -- WEBSITE: REDDIT -- //
-	// - Instant - //
+	fmt.Println("Processing REDDIT...")
+	var redditWg sync.WaitGroup
+	redditWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(0))
 		chrome_reddit_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_0 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(0))
 		safari_reddit_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(0))
 		firefox_reddit_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_0 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(0))
 		edge_reddit_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(5000))
 		chrome_reddit_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_5 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(5000))
 		safari_reddit_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(5000))
 		firefox_reddit_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_5 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(5000))
 		edge_reddit_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(10000))
 		chrome_reddit_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_10 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(10000))
 		safari_reddit_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(10000))
 		firefox_reddit_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_10 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(10000))
 		edge_reddit_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(15000))
 		chrome_reddit_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_15 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(15000))
 		safari_reddit_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(15000))
 		firefox_reddit_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_15 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(15000))
 		edge_reddit_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(20000))
 		chrome_reddit_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_20 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(20000))
 		safari_reddit_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(20000))
 		firefox_reddit_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_20 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(20000))
 		edge_reddit_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		chrome_reddit_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(25000))
 		chrome_reddit_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		safari_reddit_25 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(25000))
 		safari_reddit_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		firefox_reddit_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(25000))
 		firefox_reddit_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer redditWg.Done()
 		edge_reddit_25 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(25000))
 		edge_reddit_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_reddit_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.reddit.com"), WithDuration(30000))
-		chrome_reddit_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_reddit_30 := NewProcess(WithBrowser(safari), WithURL("https://www.reddit.com"), WithDuration(30000))
-		safari_reddit_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_reddit_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.reddit.com"), WithDuration(30000))
-		firefox_reddit_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_reddit_30 := NewProcess(WithBrowser(edge), WithURL("https://www.reddit.com"), WithDuration(30000))
-		edge_reddit_30.Run()
-	}()
+	redditWg.Wait()
+	fmt.Println("REDDIT completed!")
 
 	// -- WEBSITE: PINTEREST -- //
-	// - Instant - //
+	fmt.Println("Processing PINTEREST...")
+	var pinterestWg sync.WaitGroup
+	pinterestWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(0))
 		chrome_pinterest_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_0 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(0))
 		safari_pinterest_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(0))
 		firefox_pinterest_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_0 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(0))
 		edge_pinterest_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(5000))
 		chrome_pinterest_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_5 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(5000))
 		safari_pinterest_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(5000))
 		firefox_pinterest_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_5 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(5000))
 		edge_pinterest_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(10000))
 		chrome_pinterest_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_10 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(10000))
 		safari_pinterest_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(10000))
 		firefox_pinterest_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_10 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(10000))
 		edge_pinterest_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(15000))
 		chrome_pinterest_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_15 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(15000))
 		safari_pinterest_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(15000))
 		firefox_pinterest_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_15 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(15000))
 		edge_pinterest_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(20000))
 		chrome_pinterest_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_20 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(20000))
 		safari_pinterest_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(20000))
 		firefox_pinterest_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_20 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(20000))
 		edge_pinterest_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		chrome_pinterest_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(25000))
 		chrome_pinterest_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		safari_pinterest_25 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(25000))
 		safari_pinterest_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		firefox_pinterest_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(25000))
 		firefox_pinterest_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pinterestWg.Done()
 		edge_pinterest_25 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(25000))
 		edge_pinterest_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_pinterest_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.pinterest.com"), WithDuration(30000))
-		chrome_pinterest_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_pinterest_30 := NewProcess(WithBrowser(safari), WithURL("https://www.pinterest.com"), WithDuration(30000))
-		safari_pinterest_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_pinterest_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.pinterest.com"), WithDuration(30000))
-		firefox_pinterest_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_pinterest_30 := NewProcess(WithBrowser(edge), WithURL("https://www.pinterest.com"), WithDuration(30000))
-		edge_pinterest_30.Run()
-	}()
+	pinterestWg.Wait()
+	fmt.Println("PINTEREST completed!")
 
 	// -- WEBSITE: FANDOM -- //
-	// - Instant - //
+	fmt.Println("Processing FANDOM...")
+	var fandomWg sync.WaitGroup
+	fandomWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(0))
 		chrome_fandom_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_0 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(0))
 		safari_fandom_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(0))
 		firefox_fandom_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_0 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(0))
 		edge_fandom_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(5000))
 		chrome_fandom_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_5 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(5000))
 		safari_fandom_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(5000))
 		firefox_fandom_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_5 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(5000))
 		edge_fandom_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(10000))
 		chrome_fandom_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_10 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(10000))
 		safari_fandom_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(10000))
 		firefox_fandom_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_10 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(10000))
 		edge_fandom_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(15000))
 		chrome_fandom_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_15 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(15000))
 		safari_fandom_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(15000))
 		firefox_fandom_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_15 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(15000))
 		edge_fandom_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(20000))
 		chrome_fandom_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_20 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(20000))
 		safari_fandom_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(20000))
 		firefox_fandom_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_20 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(20000))
 		edge_fandom_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		chrome_fandom_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(25000))
 		chrome_fandom_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		safari_fandom_25 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(25000))
 		safari_fandom_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		firefox_fandom_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(25000))
 		firefox_fandom_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fandomWg.Done()
 		edge_fandom_25 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(25000))
 		edge_fandom_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_fandom_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.fandom.com"), WithDuration(30000))
-		chrome_fandom_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_fandom_30 := NewProcess(WithBrowser(safari), WithURL("https://www.fandom.com"), WithDuration(30000))
-		safari_fandom_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_fandom_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.fandom.com"), WithDuration(30000))
-		firefox_fandom_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_fandom_30 := NewProcess(WithBrowser(edge), WithURL("https://www.fandom.com"), WithDuration(30000))
-		edge_fandom_30.Run()
-	}()
+	fandomWg.Wait()
+	fmt.Println("FANDOM completed!")
 
 	// -- WEBSITE: PORNHUB -- //
-	// - Instant - //
+	fmt.Println("Processing PORNHUB...")
+	var pornhubWg sync.WaitGroup
+	pornhubWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(0))
 		chrome_pornhub_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_0 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(0))
 		safari_pornhub_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(0))
 		firefox_pornhub_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_0 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(0))
 		edge_pornhub_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(5000))
 		chrome_pornhub_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_5 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(5000))
 		safari_pornhub_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(5000))
 		firefox_pornhub_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_5 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(5000))
 		edge_pornhub_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(10000))
 		chrome_pornhub_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_10 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(10000))
 		safari_pornhub_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(10000))
 		firefox_pornhub_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_10 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(10000))
 		edge_pornhub_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(15000))
 		chrome_pornhub_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_15 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(15000))
 		safari_pornhub_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(15000))
 		firefox_pornhub_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_15 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(15000))
 		edge_pornhub_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(20000))
 		chrome_pornhub_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_20 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(20000))
 		safari_pornhub_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(20000))
 		firefox_pornhub_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_20 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(20000))
 		edge_pornhub_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		chrome_pornhub_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(25000))
 		chrome_pornhub_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		safari_pornhub_25 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(25000))
 		safari_pornhub_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		firefox_pornhub_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(25000))
 		firefox_pornhub_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer pornhubWg.Done()
 		edge_pornhub_25 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(25000))
 		edge_pornhub_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_pornhub_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.pornhub.com"), WithDuration(30000))
-		chrome_pornhub_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_pornhub_30 := NewProcess(WithBrowser(safari), WithURL("https://www.pornhub.com"), WithDuration(30000))
-		safari_pornhub_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_pornhub_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.pornhub.com"), WithDuration(30000))
-		firefox_pornhub_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_pornhub_30 := NewProcess(WithBrowser(edge), WithURL("https://www.pornhub.com"), WithDuration(30000))
-		edge_pornhub_30.Run()
-	}()
+	pornhubWg.Wait()
+	fmt.Println("PORNHUB completed!")
 
 	// -- WEBSITE: SOAP2DAY -- //
-	// - Instant - //
+	fmt.Println("Processing SOAP2DAY...")
+	var soap2dayWg sync.WaitGroup
+	soap2dayWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_0 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(0))
 		chrome_soap2day_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_0 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(0))
 		safari_soap2day_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_0 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(0))
 		firefox_soap2day_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_0 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(0))
 		edge_soap2day_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_5 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(5000))
 		chrome_soap2day_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_5 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(5000))
 		safari_soap2day_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_5 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(5000))
 		firefox_soap2day_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_5 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(5000))
 		edge_soap2day_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_10 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(10000))
 		chrome_soap2day_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_10 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(10000))
 		safari_soap2day_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_10 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(10000))
 		firefox_soap2day_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_10 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(10000))
 		edge_soap2day_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_15 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(15000))
 		chrome_soap2day_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_15 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(15000))
 		safari_soap2day_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_15 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(15000))
 		firefox_soap2day_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_15 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(15000))
 		edge_soap2day_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_20 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(20000))
 		chrome_soap2day_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_20 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(20000))
 		safari_soap2day_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_20 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(20000))
 		firefox_soap2day_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_20 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(20000))
 		edge_soap2day_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		chrome_soap2day_25 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(25000))
 		chrome_soap2day_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		safari_soap2day_25 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(25000))
 		safari_soap2day_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		firefox_soap2day_25 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(25000))
 		firefox_soap2day_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer soap2dayWg.Done()
 		edge_soap2day_25 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(25000))
 		edge_soap2day_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_soap2day_30 := NewProcess(WithBrowser(chrome), WithURL("https://soap2day.to"), WithDuration(30000))
-		chrome_soap2day_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_soap2day_30 := NewProcess(WithBrowser(safari), WithURL("https://soap2day.to"), WithDuration(30000))
-		safari_soap2day_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_soap2day_30 := NewProcess(WithBrowser(firefox), WithURL("https://soap2day.to"), WithDuration(30000))
-		firefox_soap2day_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_soap2day_30 := NewProcess(WithBrowser(edge), WithURL("https://soap2day.to"), WithDuration(30000))
-		edge_soap2day_30.Run()
-	}()
+	soap2dayWg.Wait()
+	fmt.Println("SOAP2DAY completed!")
 
 	// -- WEBSITE: XVIDEOS -- //
-	// - Instant - //
+	fmt.Println("Processing XVIDEOS...")
+	var xvideosWg sync.WaitGroup
+	xvideosWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(0))
 		chrome_xvideos_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_0 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(0))
 		safari_xvideos_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(0))
 		firefox_xvideos_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_0 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(0))
 		edge_xvideos_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(5000))
 		chrome_xvideos_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_5 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(5000))
 		safari_xvideos_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(5000))
 		firefox_xvideos_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_5 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(5000))
 		edge_xvideos_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(10000))
 		chrome_xvideos_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_10 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(10000))
 		safari_xvideos_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(10000))
 		firefox_xvideos_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_10 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(10000))
 		edge_xvideos_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(15000))
 		chrome_xvideos_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_15 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(15000))
 		safari_xvideos_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(15000))
 		firefox_xvideos_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_15 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(15000))
 		edge_xvideos_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(20000))
 		chrome_xvideos_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_20 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(20000))
 		safari_xvideos_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(20000))
 		firefox_xvideos_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_20 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(20000))
 		edge_xvideos_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		chrome_xvideos_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(25000))
 		chrome_xvideos_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		safari_xvideos_25 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(25000))
 		safari_xvideos_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		firefox_xvideos_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(25000))
 		firefox_xvideos_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer xvideosWg.Done()
 		edge_xvideos_25 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(25000))
 		edge_xvideos_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_xvideos_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.xvideos.com"), WithDuration(30000))
-		chrome_xvideos_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_xvideos_30 := NewProcess(WithBrowser(safari), WithURL("https://www.xvideos.com"), WithDuration(30000))
-		safari_xvideos_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_xvideos_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.xvideos.com"), WithDuration(30000))
-		firefox_xvideos_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_xvideos_30 := NewProcess(WithBrowser(edge), WithURL("https://www.xvideos.com"), WithDuration(30000))
-		edge_xvideos_30.Run()
-	}()
+	xvideosWg.Wait()
+	fmt.Println("XVIDEOS completed!")
 
 	// -- WEBSITE: FASTDOWNLOAD -- //
-	// - Instant - //
+	fmt.Println("Processing FASTDOWNLOAD...")
+	var fastdownloadWg sync.WaitGroup
+	fastdownloadWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(0))
 		chrome_fastdownload_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_0 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(0))
 		safari_fastdownload_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(0))
 		firefox_fastdownload_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_0 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(0))
 		edge_fastdownload_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(5000))
 		chrome_fastdownload_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_5 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(5000))
 		safari_fastdownload_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(5000))
 		firefox_fastdownload_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_5 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(5000))
 		edge_fastdownload_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(10000))
 		chrome_fastdownload_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_10 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(10000))
 		safari_fastdownload_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(10000))
 		firefox_fastdownload_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_10 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(10000))
 		edge_fastdownload_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(15000))
 		chrome_fastdownload_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_15 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(15000))
 		safari_fastdownload_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(15000))
 		firefox_fastdownload_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_15 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(15000))
 		edge_fastdownload_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(20000))
 		chrome_fastdownload_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_20 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(20000))
 		safari_fastdownload_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(20000))
 		firefox_fastdownload_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_20 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(20000))
 		edge_fastdownload_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		chrome_fastdownload_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(25000))
 		chrome_fastdownload_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		safari_fastdownload_25 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(25000))
 		safari_fastdownload_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		firefox_fastdownload_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(25000))
 		firefox_fastdownload_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer fastdownloadWg.Done()
 		edge_fastdownload_25 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(25000))
 		edge_fastdownload_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_fastdownload_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.fastdownload.com"), WithDuration(30000))
-		chrome_fastdownload_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_fastdownload_30 := NewProcess(WithBrowser(safari), WithURL("https://www.fastdownload.com"), WithDuration(30000))
-		safari_fastdownload_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_fastdownload_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.fastdownload.com"), WithDuration(30000))
-		firefox_fastdownload_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_fastdownload_30 := NewProcess(WithBrowser(edge), WithURL("https://www.fastdownload.com"), WithDuration(30000))
-		edge_fastdownload_30.Run()
-	}()
+	fastdownloadWg.Wait()
+	fmt.Println("FASTDOWNLOAD completed!")
 
 	// -- WEBSITE: ENDACE -- //
-	// - Instant - //
+	fmt.Println("Processing ENDACE...")
+	var endaceWg sync.WaitGroup
+	endaceWg.Add(24)
+
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_0 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(0))
 		chrome_endace_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_0 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(0))
 		safari_endace_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_0 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(0))
 		firefox_endace_0.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_0 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(0))
 		edge_endace_0.Run()
 	}()
 
-	// - Delayed: 5 seconds - //
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_5 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(5000))
 		chrome_endace_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_5 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(5000))
 		safari_endace_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_5 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(5000))
 		firefox_endace_5.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_5 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(5000))
 		edge_endace_5.Run()
 	}()
 
-	// - Delayed: 10 seconds - //
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_10 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(10000))
 		chrome_endace_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_10 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(10000))
 		safari_endace_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_10 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(10000))
 		firefox_endace_10.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_10 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(10000))
 		edge_endace_10.Run()
 	}()
 
-	// - Delayed: 15 seconds - //
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_15 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(15000))
 		chrome_endace_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_15 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(15000))
 		safari_endace_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_15 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(15000))
 		firefox_endace_15.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_15 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(15000))
 		edge_endace_15.Run()
 	}()
 
-	// - Delayed: 20 seconds - //
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_20 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(20000))
 		chrome_endace_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_20 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(20000))
 		safari_endace_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_20 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(20000))
 		firefox_endace_20.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_20 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(20000))
 		edge_endace_20.Run()
 	}()
 
-	// - Delayed: 25 seconds - //
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		chrome_endace_25 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(25000))
 		chrome_endace_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		safari_endace_25 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(25000))
 		safari_endace_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		firefox_endace_25 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(25000))
 		firefox_endace_25.Run()
 	}()
 	go func() {
-		defer wg.Done()
+		defer endaceWg.Done()
 		edge_endace_25 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(25000))
 		edge_endace_25.Run()
 	}()
 
-	// - Delayed: 30 seconds - //
-	go func() {
-		defer wg.Done()
-		chrome_endace_30 := NewProcess(WithBrowser(chrome), WithURL("https://www.endace.com"), WithDuration(30000))
-		chrome_endace_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		safari_endace_30 := NewProcess(WithBrowser(safari), WithURL("https://www.endace.com"), WithDuration(30000))
-		safari_endace_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		firefox_endace_30 := NewProcess(WithBrowser(firefox), WithURL("https://www.endace.com"), WithDuration(30000))
-		firefox_endace_30.Run()
-	}()
-	go func() {
-		defer wg.Done()
-		edge_endace_30 := NewProcess(WithBrowser(edge), WithURL("https://www.endace.com"), WithDuration(30000))
-		edge_endace_30.Run()
-	}()
+	endaceWg.Wait()
+	fmt.Println("ENDACE completed!")
 
-	// Wait for all 216 processes to complete
-	wg.Wait()
-
+	fmt.Println("All websites completed successfully!")
 	return nil
 }
 
-// GenerateTotalsFile creates DATA_TOTAL.txt with browser totals
+// ---- DATA PROCESSING ---- //
+
 func GenerateTotalsFile() {
 	fmt.Println("Starting to parse DATA.txt...")
 
@@ -1960,137 +1745,137 @@ func GenerateTotalsFile() {
 }
 
 func BrowserRanking() {
-    fmt.Println("Analyzing browser rankings...")
-    
-    file, err := os.Open("./DATA_TOTAL.txt")
-    if err != nil {
-        fmt.Printf("Error opening DATA_TOTAL.txt: %v\n", err)
-        return
-    }
-    defer file.Close()
+	fmt.Println("Analyzing browser rankings...")
 
-    // Parse the existing DATA_TOTAL.txt format
-    chromeStats := &BrowserStats{Browser: "chrome"}
-    edgeStats := &BrowserStats{Browser: "edge"}
-    firefoxStats := &BrowserStats{Browser: "firefox"}
-    safariStats := &BrowserStats{Browser: "safari"}
-    
-    scanner := bufio.NewScanner(file)
-    var currentStats *BrowserStats
-    
-    for scanner.Scan() {
-        line := strings.TrimSpace(scanner.Text())
-        
-        // Identify which browser section we're in
-        if line == "CHROME:" {
-            currentStats = chromeStats
-            continue
-        } else if line == "EDGE:" {
-            currentStats = edgeStats
-            continue
-        } else if line == "FIREFOX:" {
-            currentStats = firefoxStats
-            continue
-        } else if line == "SAFARI:" {
-            currentStats = safariStats
-            continue
-        }
-        
-        if currentStats == nil {
-            continue
-        }
-        
-        // Parse the values
-        if strings.HasPrefix(line, "Total Cookies: ") {
-            fmt.Sscanf(line, "Total Cookies: %d", &currentStats.TotalCookies)
-        } else if strings.HasPrefix(line, "Third-Party Cookies: ") {
-            fmt.Sscanf(line, "Third-Party Cookies: %d", &currentStats.TotalThirdParty)
-        } else if strings.HasPrefix(line, "Secure Domains: ") {
-            fmt.Sscanf(line, "Secure Domains: %d", &currentStats.TotalSecure)
-        } else if strings.HasPrefix(line, "HttpOnly: ") {
-            fmt.Sscanf(line, "HttpOnly: %d", &currentStats.TotalHttpOnly)
-        }
-    }
+	file, err := os.Open("./DATA_TOTAL.txt")
+	if err != nil {
+		fmt.Printf("Error opening DATA_TOTAL.txt: %v\n", err)
+		return
+	}
+	defer file.Close()
 
-    // Create simple rankings file
-    outFile, err := os.Create("SIMPLE_RANKINGS.txt")
-    if err != nil {
-        fmt.Printf("Error creating SIMPLE_RANKINGS.txt: %v\n", err)
-        return
-    }
-    defer outFile.Close()
+	// Parse the existing DATA_TOTAL.txt format
+	chromeStats := &BrowserStats{Browser: "chrome"}
+	edgeStats := &BrowserStats{Browser: "edge"}
+	firefoxStats := &BrowserStats{Browser: "firefox"}
+	safariStats := &BrowserStats{Browser: "safari"}
 
-    fmt.Fprintf(outFile, "=== SIMPLE BROWSER RANKINGS ===\n\n")
+	scanner := bufio.NewScanner(file)
+	var currentStats *BrowserStats
 
-    // 1. Fewest Total Cookies
-    browsers := []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
-    
-    fmt.Fprintf(outFile, "1. FEWEST COOKIES (Better for Privacy):\n")
-    
-    // Sort by total cookies
-    for i := 0; i < len(browsers)-1; i++ {
-        for j := i + 1; j < len(browsers); j++ {
-            if browsers[i].TotalCookies > browsers[j].TotalCookies {
-                browsers[i], browsers[j] = browsers[j], browsers[i]
-            }
-        }
-    }
-    
-    for i, browser := range browsers {
-        fmt.Fprintf(outFile, "   %d. %s: %d cookies\n", i+1, strings.ToUpper(browser.Browser), browser.TotalCookies)
-    }
-    
-    fmt.Fprintf(outFile, "\n2. FEWEST THIRD-PARTY COOKIES:\n")
-    
-    // Reset and sort by third-party cookies
-    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
-    for i := 0; i < len(browsers)-1; i++ {
-        for j := i + 1; j < len(browsers); j++ {
-            if browsers[i].TotalThirdParty > browsers[j].TotalThirdParty {
-                browsers[i], browsers[j] = browsers[j], browsers[i]
-            }
-        }
-    }
-    
-    for i, browser := range browsers {
-        fmt.Fprintf(outFile, "   %d. %s: %d third-party\n", i+1, strings.ToUpper(browser.Browser), browser.TotalThirdParty)
-    }
-    
-    fmt.Fprintf(outFile, "\n3. MOST SECURE COOKIES:\n")
-    
-    // Reset and sort by secure cookies (descending)
-    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
-    for i := 0; i < len(browsers)-1; i++ {
-        for j := i + 1; j < len(browsers); j++ {
-            if browsers[i].TotalSecure < browsers[j].TotalSecure {
-                browsers[i], browsers[j] = browsers[j], browsers[i]
-            }
-        }
-    }
-    
-    for i, browser := range browsers {
-        fmt.Fprintf(outFile, "   %d. %s: %d secure\n", i+1, strings.ToUpper(browser.Browser), browser.TotalSecure)
-    }
-    
-    // Privacy winner (fewest total + fewest third-party)
-    fmt.Fprintf(outFile, "\n=== PRIVACY WINNER ===\n")
-    browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
-    
-    // Scoring: total cookies + (third-party * 2) = lower is better
-    minScore := 999999
-    winner := ""
-    
-    for _, browser := range browsers {
-        score := browser.TotalCookies + (browser.TotalThirdParty * 2)
-        if score < minScore {
-            minScore = score
-            winner = browser.Browser
-        }
-        fmt.Fprintf(outFile, "%s: %d total + %d third-party = %d points\n", 
-            strings.ToUpper(browser.Browser), browser.TotalCookies, browser.TotalThirdParty, score)
-    }
-    
-    fmt.Fprintf(outFile, "\nWINNER: %s (lowest score = best privacy)\n", strings.ToUpper(winner))
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
 
-    fmt.Println("Simple rankings saved to: SIMPLE_RANKINGS.txt")
+		// Identify which browser section we're in
+		if line == "CHROME:" {
+			currentStats = chromeStats
+			continue
+		} else if line == "EDGE:" {
+			currentStats = edgeStats
+			continue
+		} else if line == "FIREFOX:" {
+			currentStats = firefoxStats
+			continue
+		} else if line == "SAFARI:" {
+			currentStats = safariStats
+			continue
+		}
+
+		if currentStats == nil {
+			continue
+		}
+
+		// Parse the values
+		if strings.HasPrefix(line, "Total Cookies: ") {
+			fmt.Sscanf(line, "Total Cookies: %d", &currentStats.TotalCookies)
+		} else if strings.HasPrefix(line, "Third-Party Cookies: ") {
+			fmt.Sscanf(line, "Third-Party Cookies: %d", &currentStats.TotalThirdParty)
+		} else if strings.HasPrefix(line, "Secure Domains: ") {
+			fmt.Sscanf(line, "Secure Domains: %d", &currentStats.TotalSecure)
+		} else if strings.HasPrefix(line, "HttpOnly: ") {
+			fmt.Sscanf(line, "HttpOnly: %d", &currentStats.TotalHttpOnly)
+		}
+	}
+
+	// Create simple rankings file
+	outFile, err := os.Create("SIMPLE_RANKINGS.txt")
+	if err != nil {
+		fmt.Printf("Error creating SIMPLE_RANKINGS.txt: %v\n", err)
+		return
+	}
+	defer outFile.Close()
+
+	fmt.Fprintf(outFile, "=== SIMPLE BROWSER RANKINGS ===\n\n")
+
+	// 1. Fewest Total Cookies
+	browsers := []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+
+	fmt.Fprintf(outFile, "1. FEWEST COOKIES (Better for Privacy):\n")
+
+	// Sort by total cookies
+	for i := 0; i < len(browsers)-1; i++ {
+		for j := i + 1; j < len(browsers); j++ {
+			if browsers[i].TotalCookies > browsers[j].TotalCookies {
+				browsers[i], browsers[j] = browsers[j], browsers[i]
+			}
+		}
+	}
+
+	for i, browser := range browsers {
+		fmt.Fprintf(outFile, "   %d. %s: %d cookies\n", i+1, strings.ToUpper(browser.Browser), browser.TotalCookies)
+	}
+
+	fmt.Fprintf(outFile, "\n2. FEWEST THIRD-PARTY COOKIES:\n")
+
+	// Reset and sort by third-party cookies
+	browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+	for i := 0; i < len(browsers)-1; i++ {
+		for j := i + 1; j < len(browsers); j++ {
+			if browsers[i].TotalThirdParty > browsers[j].TotalThirdParty {
+				browsers[i], browsers[j] = browsers[j], browsers[i]
+			}
+		}
+	}
+
+	for i, browser := range browsers {
+		fmt.Fprintf(outFile, "   %d. %s: %d third-party\n", i+1, strings.ToUpper(browser.Browser), browser.TotalThirdParty)
+	}
+
+	fmt.Fprintf(outFile, "\n3. MOST SECURE COOKIES:\n")
+
+	// Reset and sort by secure cookies (descending)
+	browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+	for i := 0; i < len(browsers)-1; i++ {
+		for j := i + 1; j < len(browsers); j++ {
+			if browsers[i].TotalSecure < browsers[j].TotalSecure {
+				browsers[i], browsers[j] = browsers[j], browsers[i]
+			}
+		}
+	}
+
+	for i, browser := range browsers {
+		fmt.Fprintf(outFile, "   %d. %s: %d secure\n", i+1, strings.ToUpper(browser.Browser), browser.TotalSecure)
+	}
+
+	// Privacy winner (fewest total + fewest third-party)
+	fmt.Fprintf(outFile, "\n=== PRIVACY WINNER ===\n")
+	browsers = []*BrowserStats{chromeStats, edgeStats, firefoxStats, safariStats}
+
+	// Scoring: total cookies + (third-party * 2) = lower is better
+	minScore := 999999
+	winner := ""
+
+	for _, browser := range browsers {
+		score := browser.TotalCookies + (browser.TotalThirdParty * 2)
+		if score < minScore {
+			minScore = score
+			winner = browser.Browser
+		}
+		fmt.Fprintf(outFile, "%s: %d total + %d third-party = %d points\n",
+			strings.ToUpper(browser.Browser), browser.TotalCookies, browser.TotalThirdParty, score)
+	}
+
+	fmt.Fprintf(outFile, "\nWINNER: %s (lowest score = best privacy)\n", strings.ToUpper(winner))
+
+	fmt.Println("Simple rankings saved to: SIMPLE_RANKINGS.txt")
 }
