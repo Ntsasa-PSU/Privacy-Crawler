@@ -1710,6 +1710,22 @@ func GenerateTotalsFile() {
 	fmt.Fprintf(outFile, "Session Cookies: %d\n", chromiumStats.TotalSessionCookies)
 	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", chromiumStats.TotalPersistentCookies)
 
+	// Write Firefox totals
+	fmt.Fprintf(outFile, "FIREFOX:\n")
+	fmt.Fprintf(outFile, "Total Reports: %d\n", firefoxStats.TotalReports)
+	fmt.Fprintf(outFile, "Total Cookies: %d\n", firefoxStats.TotalCookies)
+	fmt.Fprintf(outFile, "First-Party Cookies: %d\n", firefoxStats.TotalFirstParty)
+	fmt.Fprintf(outFile, "Third-Party Cookies: %d\n", firefoxStats.TotalThirdParty)
+	fmt.Fprintf(outFile, "Secure Domains: %d\n", firefoxStats.TotalSecure)
+	fmt.Fprintf(outFile, "Unsecure Domains: %d\n", firefoxStats.TotalUnsecure)
+	fmt.Fprintf(outFile, "HttpOnly: %d\n", firefoxStats.TotalHttpOnly)
+	fmt.Fprintf(outFile, "Not HttpOnly: %d\n", firefoxStats.TotalNotHttpOnly)
+	fmt.Fprintf(outFile, "SameSite Strict: %d\n", firefoxStats.TotalSameSiteStrict)
+	fmt.Fprintf(outFile, "SameSite Lax: %d\n", firefoxStats.TotalSameSiteLax)
+	fmt.Fprintf(outFile, "SameSite None: %d\n", firefoxStats.TotalSameSiteNone)
+	fmt.Fprintf(outFile, "Session Cookies: %d\n", firefoxStats.TotalSessionCookies)
+	fmt.Fprintf(outFile, "Persistent Cookies: %d\n\n", firefoxStats.TotalPersistentCookies)
+
 	// Write WebKit totals (instead of Safari)
 	fmt.Fprintf(outFile, "WEBKIT:\n") // Changed from SAFARI:
 	fmt.Fprintf(outFile, "Total Reports: %d\n", webkitStats.TotalReports)
